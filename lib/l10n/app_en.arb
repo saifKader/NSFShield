@@ -1,0 +1,11 @@
+{
+  "hello": "Hello!",
+  "status":"online",
+  "user_status": "{username} is {status}",
+  "@user_status": {
+    "placeholders": {
+      "username": {},
+      "status": {}
+    }
+  }
+}
