@@ -1,76 +1,124 @@
+import 'dart:io';
+import 'package:document_scanner_flutter/configs/configs.dart';
+import 'package:document_scanner_flutter/document_scanner_flutter.dart';
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
-import 'package:camera/camera.dart';
-import 'package:path_provider/path_provider.dart';
 
 class ScanScreen extends StatefulWidget {
+  final File? initialImage;
+
+  ScanScreen({this.initialImage});
+
   @override
   _ScanScreenState createState() => _ScanScreenState();
 }
 
 class _ScanScreenState extends State<ScanScreen> {
-  CameraController? _cameraController;
-  List<CameraDescription>? cameras;
-  int selectedCameraIndex = 0;
+  File? _image;
 
   @override
   void initState() {
     super.initState();
-    _initializeCamera();
-  }
-
-  Future<void> _initializeCamera() async {
-    cameras = await availableCameras();
-    _cameraController = CameraController(
-      cameras![selectedCameraIndex],
-      ResolutionPreset.max,
-    );
-
-    _cameraController!.initialize().then((_) {
-      if (!mounted) {
-        return;
-      }
-      setState(() {});
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    if (_cameraController == null || !_cameraController!.value.isInitialized) {
-      return Center(child: CircularProgressIndicator());
+    if (widget.initialImage != null) {
+      _image = widget.initialImage;
     }
+  }
 
-    return Scaffold(
-      body: Stack(
-        children: [
-          CameraPreview(_cameraController!),
-          Positioned(
-            bottom: 50.0,
-            left: 0,
-            right: 0,
-            child: Center(
-              child: FloatingActionButton(
-                onPressed: () async {
-                  try {
-                    final path = '${(await getTemporaryDirectory()).path}/${DateTime.now()}.png';
-                    XFile picture = await _cameraController!.takePicture();
-                    picture.saveTo(path);
-                    // Do something with the path if needed.
-                  } catch (e) {
-                    print(e);
-                  }
+  Future<void> _selectImageSource(BuildContext context) async {
+    var screenHeight = MediaQuery.of(context).size.height;
+    await showModalBottomSheet(
+      context: context,
+      elevation: 5.0,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(20.0),
+          topRight: Radius.circular(20.0),
+        ),
+      ),
+      builder: (BuildContext bc) {
+        return Container(
+          padding: EdgeInsets.only(bottom: screenHeight * 0.02, top: 10.0),
+          color: Colors.grey[200],
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              _buildOption(
+                icon: Icons.camera_alt,
+                text: 'Camera',
+                onTap: () async {
+                  await _launchScanner(ScannerFileSource.CAMERA);
+                  Navigator.of(context).pop();
                 },
-                child: const Icon(Icons.camera),
               ),
-            ),
+              SizedBox(height: 15.0),
+              _buildOption(
+                icon: Icons.photo_library,
+                text: 'Photo Library',
+                onTap: () async {
+                  await _launchScanner(ScannerFileSource.GALLERY);
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
           ),
-        ],
+        );
+      },
+    );
+  }
+
+  Widget _buildOption({required IconData icon, required String text, required Function onTap}) {
+    return ListTile(
+      contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
+      leading: Icon(icon, size: 30.0, color: Colors.teal),
+      title: Text(text, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 18.0)),
+      onTap: () => onTap(),
+      tileColor: Colors.grey[200],
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15.0),
       ),
     );
   }
 
+  Future<void> _launchScanner(ScannerFileSource source) async {
+    try {
+      final scannedImage = await DocumentScannerFlutter.launch(context, source: source);
+      if (scannedImage != null) {
+        setState(() {
+          _image = scannedImage;
+        });
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Scanning error: $e')),
+      );
+    }
+  }
+
   @override
-  void dispose() {
-    _cameraController?.dispose();
-    super.dispose();
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: InkWell(
+        onTap: () => _selectImageSource(context),
+        child: Center(
+          child: _image != null
+              ? Image.file(_image!)
+              : Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(FluentIcons.camera_add_24_regular, size: 120, color: Colors.grey[400]),
+              const SizedBox(height: 20), // Some spacing
+              Text(
+                "Tap anywhere to start scan",
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.grey[500],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

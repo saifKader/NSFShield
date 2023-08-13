@@ -32,6 +32,8 @@
     <string>Need camera access for scanning</string>
     <key>NSMicrophoneUsageDescription</key>
     <string>We need access to the microphone for ...</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>Need photo library access for saving images</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
