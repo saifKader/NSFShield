@@ -3,6 +3,14 @@ import 'package:document_scanner_flutter/configs/configs.dart';
 import 'package:document_scanner_flutter/document_scanner_flutter.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:permission_handler/permission_handler.dart';
+
+import '../../logic/cubits/check/check_cubit.dart';
+import '../../logic/cubits/check/check_state.dart';
+import '../../logic/cubits/user/user_cubit.dart';
+import '../../logic/cubits/user/user_state.dart';
+import 'amount_input_screen.dart';
 
 class ScanScreen extends StatefulWidget {
   final File? initialImage;
@@ -45,8 +53,8 @@ class _ScanScreenState extends State<ScanScreen> {
               _buildOption(
                 icon: Icons.camera_alt,
                 text: 'Camera',
-                onTap: () async {
-                  await _launchScanner(ScannerFileSource.CAMERA);
+                onTap: () {
+                  _launchScanner(ScannerFileSource.CAMERA);
                   Navigator.of(context).pop();
                 },
               ),
@@ -54,8 +62,8 @@ class _ScanScreenState extends State<ScanScreen> {
               _buildOption(
                 icon: Icons.photo_library,
                 text: 'Photo Library',
-                onTap: () async {
-                  await _launchScanner(ScannerFileSource.GALLERY);
+                onTap: () {
+                  _launchScanner(ScannerFileSource.GALLERY);
                   Navigator.of(context).pop();
                 },
               ),
@@ -81,11 +89,23 @@ class _ScanScreenState extends State<ScanScreen> {
 
   Future<void> _launchScanner(ScannerFileSource source) async {
     try {
-      final scannedImage = await DocumentScannerFlutter.launch(context, source: source);
-      if (scannedImage != null) {
-        setState(() {
-          _image = scannedImage;
-        });
+      final userState = context.read<UserCubit>().state; // Assuming you have a UserCubit for managing user states
+      if (userState is UserAuthenticated) {
+
+        final scannedImage = await DocumentScannerFlutter.launch(context, source: source);
+        if (scannedImage != null) {
+          setState(() {
+            _image = scannedImage;
+            //navigate to amount input screen
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => AmountInputScreen(scannedImage: _image),
+              ),
+            );
+
+          });
+        }
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -94,31 +114,30 @@ class _ScanScreenState extends State<ScanScreen> {
     }
   }
 
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: InkWell(
-        onTap: () => _selectImageSource(context),
-        child: Center(
-          child: _image != null
-              ? Image.file(_image!)
-              : Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(FluentIcons.camera_add_24_regular, size: 120, color: Colors.grey[400]),
-              const SizedBox(height: 20), // Some spacing
-              Text(
-                "Tap anywhere to start scan",
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.grey[500],
+      return Scaffold(
+        body: InkWell(
+          onTap: () => _selectImageSource(context),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(FluentIcons.camera_add_24_regular, size: 120, color: Colors.grey[400]),
+                const SizedBox(height: 20), // Some spacing
+                Text(
+                  "Tap anywhere to start scan",
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey[500],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
-      ),
-    );
+      );
   }
 }

@@ -5,7 +5,7 @@ ThemeData lightTheme = ThemeData(
   unselectedWidgetColor: const Color(0xFF9AAC3D),
   colorScheme: const ColorScheme(
     brightness: Brightness.dark,
-    primary: Color(0xFF9AAC3D),
+    primary: Color(0xff00A152),
     onPrimary: Colors.white,
     secondary: Color(0xFF3C3C3E),
     onSecondary: Colors.white,
@@ -84,3 +84,34 @@ ThemeData lightTheme = ThemeData(
   ),
 
 );
+class AppSizes {
+  static const khugeSpace = 28.0;
+  static const kbigSpace = 20.0;
+  static const ksmallSpace = 10.0;
+
+  static const kdividerHeight = 2.0;
+
+  static const kradius = 20.0;
+  static const kbuttonHeight = 56.0;
+  static const ksmallImageSize = 70.0;
+  static const kbigImageSize = 180.0;
+  static const khugeImageSize = 240.0;
+  static const kiconSize = 24.0;
+  static const kiconBackgroundSize = 54.0;
+  static const kiconBackgroundRadius = 99.0;
+
+  static const kshimmerTextHeight = 8.0;
+  static const kshimmerTextWidth = 100.0;
+
+  static const kmarkerSizeExpanded = 55.0;
+  static const kmarkerSizeShrinked = 38.0;
+
+  static const ktimeLineIcon = 30.0;
+  static const ktimelineDotSize = 15.0;
+
+  static const kcardHeight = 150.0;
+
+
+
+
+}

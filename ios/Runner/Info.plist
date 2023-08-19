@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>gallery acess</string>
+	<key>NSCameraUsageDescription</key>
+	<string>camera acess</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
@@ -28,12 +32,8 @@
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
-	<key>NSCameraUsageDescription</key>
-    <string>Need camera access for scanning</string>
-    <key>NSMicrophoneUsageDescription</key>
-    <string>We need access to the microphone for ...</string>
-    <key>NSPhotoLibraryUsageDescription</key>
-    <string>Need photo library access for saving images</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>We need access to the microphone for ...</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

@@ -25,7 +25,7 @@ class _MainScreenState extends State<MainScreen> {
     var screenWidth = screenSize.width;
     var screenHeight = screenSize.height;
     //var iconSize = screenWidth * 0.0697;
-    var iconSize = screenWidth * 0.064;
+    var iconSize = screenWidth * 0.062;
     return Scaffold(
       appBar: AppBar(
         shape: const RoundedRectangleBorder(
