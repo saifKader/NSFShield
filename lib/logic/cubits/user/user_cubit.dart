@@ -10,47 +10,60 @@ class UserCubit extends HydratedCubit<UserState> {
   UserCubit() : super(UserInitial()) {
     //
   }
-  String? getRefreshToken() {
-    if (state is UserAuthenticated) {
-      return (state as UserAuthenticated).refreshToken;
+  Future<void> refreshUserData() async {
+    try {
+      final currentState = state;
+
+      if (currentState is UserAuthenticated) {
+        final refreshResponse = await userRepository.refreshToken(currentState.refreshToken);
+        print('Refresh Response: $refreshResponse');
+
+        final newAccessToken = refreshResponse['access_token'];
+        final newUserJson = refreshResponse['user']; // Assuming the user data is in 'user' key
+
+        // Parse the user JSON to a User object
+        final User newUser = User.fromJson(newUserJson);
+
+        // Create a new UserAuthenticated state with updated access token and user data
+        final newUserState = currentState.copyWith(
+          accessToken: newAccessToken,
+          user: newUser,
+          refreshToken: currentState.refreshToken,
+        );
+        emit(newUserState);
+      }
+    } catch (e) {
+      print('Error refreshing user data: $e');
+      // Handle error, emit an error state or take other appropriate actions
     }
-    return null;
   }
 
+
+
+
+
   Future<void> loginUser(String username, String password) async {
+    print('Starting login process');
     emit(UserLoading());
     try {
       final response = await userRepository.login(username, password);
+      print('Login API response: $response');
       final User user = User.fromJson(response['user']);
+      print('User: $user');
       emit(UserAuthenticated(
           user: user,
           accessToken: response['access_token'],
           refreshToken: response['refresh_token']
       ));
+      print('Login successful');
     } catch (e) {
+      print('Error during login: $e');
       emit(UserError('An error occurred'));
     }
   }
 
-  Future<void> refreshToken(String token) async {
-    emit(UserLoading());
-    try {
-      final newAccessToken = await userRepository.refreshToken(token);
-      if (state is UserAuthenticated) {
-        final currentUser = (state as UserAuthenticated).user; // Retrieve current user data from state
-        emit(UserAuthenticated(
-            user: currentUser,
-            accessToken: newAccessToken,
-            refreshToken: token
-        ));
-      } else {
-        // Handle scenarios where the current state isn't UserAuthenticated
-        emit(UserError('Unable to refresh token without existing user data.'));
-      }
-    } catch (e) {
-      emit(UserError(e.toString()));
-    }
-  }
+
+
 
   @override
   UserState? fromJson(Map<String, dynamic> json) {

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:nsfsheild/data/repositories/user_repository_interface.dart';
 
 import '../providers/user_data_provider.dart';
@@ -23,9 +24,9 @@ class UserRepository implements IUserRepository {
     }
   }
 
-  Future<dynamic> sendImageAndAmount(String accountNumber, double amount, token) async {
+  Future<dynamic> sendImageAndAmount(String accountNumber, double amount, String token) async {
     try {
-      final response = await _userDataProvider.issueCheck(accountNumber, amount,token);
+      final response = await _userDataProvider.issueCheck(accountNumber, amount, token);
       if (response.statusCode == 200) {
         return response.data;
       } else {
@@ -39,41 +40,45 @@ class UserRepository implements IUserRepository {
   @override
   Future<dynamic> login(String username, String password) async {
     try {
+      print('Calling login API');
       final response = await _userDataProvider.login(username, password);
+      print('Login API response: $response');
       if (response.statusCode == 200) {
-        print('the api response ${response.data}');
+        print('Login successful');
         return response.data;
       } else {
-        // Handle non-200 status codes as per your requirements
+        print('Login failed');
         return Future.error(response.data['msg'] ?? 'Error logging in.');
       }
     } catch (e) {
+      print('Exception during login: $e');
       return Future.error(e.toString());
     }
   }
-  /*@override
-  Future<dynamic> login(String username, String password) async {
-    try {
-        final response = await _userDataProvider.login(username, password);
-        return response.statusCode == 200
-            ? response.data
-            : Future.error(response.data['msg'] ?? 'Error logging in.');
-    } catch (e) {
-      return Future.error(e.toString());
-    }
-  }*/
+
 
   @override
-  Future<dynamic> refreshToken(String token) async {
+  Future<dynamic> refreshToken(String refreshToken) async {
     try {
-      final response = await _userDataProvider.refreshToken(token);
+      final response = await _userDataProvider.refreshToken(refreshToken);
       if (response.statusCode == 200) {
-        return response.data['access_token'];
+        final newAccessToken = response.data['access_token'];
+        final newUser = response.data['user'];
+        // Update the access token in the dio instance directly
+        _userDataProvider.dio.options.headers['Authorization'] = 'Bearer $newAccessToken';
+
+        // Save the new access token to local storage
+        await HydratedBloc.storage.write('auth-token', newAccessToken);
+
+        return response.data;
       } else {
-        return Future.error(response.data['msg'] ?? 'Error refreshing token.');
+        return null;
       }
     } catch (e) {
       return Future.error(e.toString());
     }
   }
+
+
+
 }

@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:nsfsheild/utils/constants.dart';
 
 import '../../logic/cubits/user/user_cubit.dart';
+import 'auth_interceptor.dart';
 
 class UserDataProvider {
   final dio = Dio()
@@ -34,7 +35,7 @@ class UserDataProvider {
         'account_number': accountNumber,
         'amount': amount.toString(),
       });
-print(token);
+      print(token);
       final response = await dio.post(
         '/issue_check',
         data: formData,
@@ -50,51 +51,6 @@ print(token);
       throw e;
     }
   }
-
-  void _addInterceptors(UserCubit userCubit) {
-    dio.interceptors.add(InterceptorsWrapper(
-      onError: (DioError error, ErrorInterceptorHandler handler) async {
-        if (error.response?.statusCode == 401) {
-          // Detected token expiration
-
-          // Retrieve the refresh token
-          String? _refreshToken = userCubit.getRefreshToken(); // Fetch this from your state management solution or storage
-
-          if (_refreshToken != null) {
-            try {
-              // Call the refreshToken method
-              final response = await refreshToken(_refreshToken);
-              final newAccessToken = response.data['access_token'];
-
-              // Update your state/BLoC/Cubit with the new access token
-              // Here you might want to emit a new state with the updated token
-
-              // Retry the failed request with the new token
-              RequestOptions options = error.response!.requestOptions;
-              Options newOptions = Options(
-                method: options.method,
-                headers: {
-                  'Authorization': 'Bearer $newAccessToken',
-                },
-                validateStatus: (status) {
-                  return status! < 500;
-                },
-              );
-              final newResponse = await dio.request(options.path, options: newOptions);
-              handler.resolve(newResponse);
-            } catch (e) {
-              handler.reject(error);
-            }
-          } else {
-            handler.reject(error);
-          }
-        } else {
-          handler.reject(error);
-        }
-      },
-    ));
-  }
-
 
 
 
@@ -114,7 +70,7 @@ print(token);
 
   Future<Response> refreshToken(String token) async {
     return await dio.request(
-      '/refresh',
+      refreshEndpoint,
       options: Options(
         method: 'POST',
         headers: {

@@ -4,6 +4,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:nsfsheild/presentation/screens/scan_screen.dart';
 
+import 'home_screen.dart';
+
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
 
@@ -28,7 +30,7 @@ class _MainScreenState extends State<MainScreen> {
     var iconSize = screenWidth * 0.062;
     return Scaffold(
       appBar: AppBar(
-        shape: const RoundedRectangleBorder(
+        shape: _currentIndex == 0 ? null : const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             bottom: Radius.circular(30),
           ),
@@ -58,8 +60,7 @@ class _MainScreenState extends State<MainScreen> {
                 SizedBox(
                   width: 35, // Slightly reduced the width
                   height: 35, // Slightly reduced the height
-                  child:
-                      Image.asset('assets/images/logo.png', fit: BoxFit.cover),
+                  child: Image.asset('assets/images/logo.png', fit: BoxFit.cover),
                 ),
                 const SizedBox(width: 5), // Reduced the width
                 const Text(
@@ -75,15 +76,16 @@ class _MainScreenState extends State<MainScreen> {
         ),
         actions: [
           InkWell(
-              onTap: () {},
-              child: const IconButton(
-                icon: Icon(
-                  Icons.notifications,
-                  size: 24,
-                  color: Colors.white,
-                ),
-                onPressed: null,
-              )),
+            onTap: () {},
+            child: const IconButton(
+              icon: Icon(
+                Icons.notifications,
+                size: 24,
+                color: Colors.white,
+              ),
+              onPressed: null,
+            ),
+          ),
         ],
       ),
       body: PageView(
@@ -91,7 +93,7 @@ class _MainScreenState extends State<MainScreen> {
         // add this line to disable swipe
         controller: _pageController,
         children: <Widget>[
-          Container(child: Center(child: Text('Home'))),
+          HomeScreen(),
           Container(child: Center(child: Text('Profile'))),
           ScanScreen(),
         ],

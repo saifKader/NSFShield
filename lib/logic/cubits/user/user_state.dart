@@ -58,6 +58,14 @@ class UserAuthenticated extends UserState {
       refreshToken: json['refreshToken'],
     );
   }
+
+  UserAuthenticated copyWith({User? user, String? accessToken, String? refreshToken}) {
+    return UserAuthenticated(
+      user: user ?? this.user,
+      accessToken: accessToken ?? this.accessToken,
+      refreshToken: refreshToken ?? this.refreshToken,
+    );
+  }
 }
 
 

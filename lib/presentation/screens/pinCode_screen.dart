@@ -16,10 +16,12 @@ import 'main_screen.dart';
 class PinCodeScreen extends StatefulWidget {
   final String accountNumber;
   final double amount;
+  final String alertText;
 
   PinCodeScreen({
     required this.accountNumber,
     required this.amount,
+    required this.alertText,
   });
 
   @override
@@ -30,6 +32,12 @@ class _PinCodeScreenState extends State<PinCodeScreen> {
   TextEditingController _pinController = TextEditingController();
   bool _isPinFilled = false;
 
+
+
+  Future<void> _refreshUserData() async {
+    final userCubit = context.read<UserCubit>();
+    await userCubit.refreshUserData();
+  }
   void _submit() async {
     final userState = context.read<UserCubit>().state; // Assuming you have a UserCubit for managing user states
     if (userState is UserAuthenticated) {
@@ -56,6 +64,9 @@ class _PinCodeScreenState extends State<PinCodeScreen> {
       );
     }
   }
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -125,14 +136,31 @@ class _PinCodeScreenState extends State<PinCodeScreen> {
         child: BlocBuilder<CheckCubit, CheckState>(
           builder: (context, state) {
             if (state is CheckSuccess) {
-              SchedulerBinding.instance?.addPostFrameCallback((_) {
-                Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(
-                      builder: (context) => const MainScreen()
-                  ),
-                      (route) => false,
+              Future.delayed(Duration.zero, () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text('Check Success'),
+                      content: Text('Check has been processed successfully with ${widget.alertText} blocked from your account balance.'),
+                      actions: [
+                        TextButton(
+                          child: Text('OK'),
+                          onPressed: () {
+                            Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(
+                                builder: (context) => const MainScreen(),
+                              ),
+                                  (route) => false,
+                            );
+                          },
+                        ),
+                      ],
+                    );
+                  },
                 );
               });
+            _refreshUserData();
             }
             return Column(
 

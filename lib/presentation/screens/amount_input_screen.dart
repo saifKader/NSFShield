@@ -29,6 +29,7 @@ class AmountInputScreen extends StatefulWidget {
 class _AmountInputScreenState extends State<AmountInputScreen> {
   double _amount = 0;
   String accountNumber = '';
+  String _alertText = '';
 
 
   @override
@@ -115,6 +116,7 @@ class _AmountInputScreenState extends State<AmountInputScreen> {
                     ),
                   );
                 } else if (checkState is CheckSuccess) {
+                  _alertText = "\$$_amount blocked";
                   accountNumber = checkState.responseData;
                   print('hahouuuu $accountNumber');
                   SchedulerBinding.instance!.addPostFrameCallback((_) {
@@ -124,6 +126,7 @@ class _AmountInputScreenState extends State<AmountInputScreen> {
                         builder: (context) => PinCodeScreen(
                           accountNumber: accountNumber,
                           amount: _amount,
+                          alertText: _alertText,
                         ),
                       ),
                     );

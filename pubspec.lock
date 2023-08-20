@@ -25,6 +25,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
+  animation_list:
+    dependency: "direct main"
+    description:
+      name: animation_list
+      sha256: "48aae726edd0853f8cacc4f39e8aac728179af95e5b048dfef9fb78b9121117a"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.2.1"
   archive:
     dependency: transitive
     description:
@@ -201,14 +209,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.3"
-  chopper:
-    dependency: "direct main"
-    description:
-      name: chopper
-      sha256: "813cabd029ad8c020874429a671f2c15f45cfc3ced66b566bfa181a9b61b89b8"
-      url: "https://pub.dev"
-    source: hosted
-    version: "4.0.6"
   clock:
     dependency: transitive
     description:
@@ -370,6 +370,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.2"
+  flip_card:
+    dependency: "direct main"
+    description:
+      name: flip_card
+      sha256: "5d4aa58f3983cced0782f4ce45826b7eea36e8e464964d9209dcbc7a87b2292f"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.7.0"
   fluentui_system_icons:
     dependency: "direct main"
     description:
@@ -470,6 +478,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.2"
+  google_fonts:
+    dependency: "direct main"
+    description:
+      name: google_fonts
+      sha256: e20ff62b158b96f392bfc8afe29dee1503c94fbea2cbe8186fd59b756b8ae982
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.1.0"
   graphs:
     dependency: transitive
     description:
@@ -490,10 +506,10 @@ packages:
     dependency: "direct main"
     description:
       name: http
-      sha256: "5895291c13fa8a3bd82e76d5627f69e0d85ca6a30dcac95c4ea19a5d555879c2"
+      sha256: "759d1a329847dd0f39226c688d3e06a6b8679668e350e2891a6474f8b4bb8525"
       url: "https://pub.dev"
     source: hosted
-    version: "0.13.6"
+    version: "1.1.0"
   http_multi_server:
     dependency: transitive
     description:
