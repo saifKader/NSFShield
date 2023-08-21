@@ -12,6 +12,24 @@ class UserDataProvider {
     ..options.connectTimeout = const Duration(milliseconds: 5000)
     ..options.receiveTimeout = const Duration(milliseconds: 3000);
 
+
+  Future<Response> getCheckTransactions(String token) async {
+    try {
+      final response = await dio.get(
+        checkTransactionsEndpoint,
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $token',
+          },
+        ),
+      );
+      return response;
+    } catch (e) {
+      print('Error getting check transactions: $e');
+      throw e;
+    }
+  }
+
   Future<Response> extractAccountNumber(File image) async {
     try {
       FormData formData = FormData.fromMap({
@@ -35,7 +53,6 @@ class UserDataProvider {
         'account_number': accountNumber,
         'amount': amount.toString(),
       });
-      print(token);
       final response = await dio.post(
         '/issue_check',
         data: formData,

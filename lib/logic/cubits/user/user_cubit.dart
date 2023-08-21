@@ -16,7 +16,6 @@ class UserCubit extends HydratedCubit<UserState> {
 
       if (currentState is UserAuthenticated) {
         final refreshResponse = await userRepository.refreshToken(currentState.refreshToken);
-        print('Refresh Response: $refreshResponse');
 
         final newAccessToken = refreshResponse['access_token'];
         final newUserJson = refreshResponse['user']; // Assuming the user data is in 'user' key
@@ -43,13 +42,10 @@ class UserCubit extends HydratedCubit<UserState> {
 
 
   Future<void> loginUser(String username, String password) async {
-    print('Starting login process');
     emit(UserLoading());
     try {
       final response = await userRepository.login(username, password);
-      print('Login API response: $response');
       final User user = User.fromJson(response['user']);
-      print('User: $user');
       emit(UserAuthenticated(
           user: user,
           accessToken: response['access_token'],

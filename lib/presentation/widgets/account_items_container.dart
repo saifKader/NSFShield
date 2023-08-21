@@ -66,7 +66,7 @@ class AccountItemsContainer extends StatelessWidget {
                       charge,
                       style: TextStyle(
                         fontSize: 18.0,
-                        color: type == "Payment" ? Colors.red : Colors.green,
+                        color: type == "Check" ? Colors.red : Colors.green,
                       ),
                     ),
                     SizedBox(height: 8.0),

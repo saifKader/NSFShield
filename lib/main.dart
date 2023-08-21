@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:nsfsheild/logic/cubits/check/transaction_cubit.dart';
 import 'package:path_provider/path_provider.dart';
 import 'data/providers/service_locator.dart';
 import 'data/repositories/user_repository.dart';
@@ -53,6 +54,9 @@ class MyApp extends StatelessWidget {
           ),
           BlocProvider<CheckCubit>(
             create: (context) => CheckCubit(),
+          ),
+          BlocProvider<TransactionCubit>(
+            create: (context) => TransactionCubit(context.read<UserRepository>())
           ),
         ],
         child: MaterialApp(

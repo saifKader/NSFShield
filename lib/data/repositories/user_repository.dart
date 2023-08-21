@@ -2,10 +2,41 @@ import 'dart:io';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:nsfsheild/data/repositories/user_repository_interface.dart';
 
+import '../models/check_transaction_model.dart';
 import '../providers/user_data_provider.dart';
 
 class UserRepository implements IUserRepository {
   final UserDataProvider _userDataProvider = UserDataProvider();
+
+
+  Future<List<CheckTransaction>> getCheckTransactions(String token) async {
+    try {
+      final response = await _userDataProvider.getCheckTransactions(token);
+      if (response.statusCode == 200) {
+        final List<dynamic>? transactionList = response.data;  // Use nullable type
+        if (transactionList != null) {  // Check for null before proceeding
+          print('hi here 2 ${response.data}');
+          final List<CheckTransaction> transactions = transactionList
+              .map((transactionJson) =>
+              CheckTransaction.fromJson(transactionJson))
+              .toList();
+          print('hi here 3');
+          print(transactionList);
+          print(transactions);
+          return transactions;
+        } else {
+          print('Transaction data is null');
+          return [];
+        }
+      } else {
+        print('Response status code is not 200');
+        return [];
+      }
+    } catch (e) {
+      print('Error getting check transactions: $e');
+      return Future.error(e.toString());
+    }
+  }
 
 
   @override
@@ -13,7 +44,6 @@ class UserRepository implements IUserRepository {
     try {
       final response = await _userDataProvider.extractAccountNumber(image);
       if (response.statusCode == 200) {
-        print('here ${response.data}');
         return response.data;
       } else {
         return null;
@@ -40,14 +70,10 @@ class UserRepository implements IUserRepository {
   @override
   Future<dynamic> login(String username, String password) async {
     try {
-      print('Calling login API');
       final response = await _userDataProvider.login(username, password);
-      print('Login API response: $response');
       if (response.statusCode == 200) {
-        print('Login successful');
         return response.data;
       } else {
-        print('Login failed');
         return Future.error(response.data['msg'] ?? 'Error logging in.');
       }
     } catch (e) {

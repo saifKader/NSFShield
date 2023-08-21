@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import '../../logic/cubits/check/transaction_cubit.dart';
 import '../../logic/cubits/user/user_cubit.dart';
 import '../../logic/cubits/user/user_state.dart';
 import '../widgets/account_items_container.dart';
@@ -15,11 +16,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _refreshUserData();
-  }
 
   Future<void> _refreshUserData() async {
     final userCubit = context.read<UserCubit>();
@@ -33,7 +29,10 @@ class _HomeScreenState extends State<HomeScreen> {
       body: BlocBuilder<UserCubit, UserState>(
         builder: (context, state) {
           if (state is UserAuthenticated) {
+
             final user = state.user;
+            final token = state.accessToken;
+            context.read<TransactionCubit>().loadCheckTransactions(token);
             final balance = user.accounts?[0].balance ?? 0.0;
             final blockedBalance = user.accounts?[0].blockedBalance ?? 0.0;
             String formattedDate = DateFormat("dd MMM").format(DateTime.now());
@@ -66,7 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     padding: EdgeInsets.only(
                       top: MediaQuery.of(context).size.height * 0.03,
                     ),
-                    child: displayAccountList(),
+                    child: displayAccountTransactions(),
                   ),
                 ),
               ],
@@ -80,32 +79,38 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget displayAccountList() {
-    return ListView(
-      children: <Widget>[
-        AccountItemsContainer(
-          item: "Trevello App",
-          charge: r"+ $ 4,946.00",
-          dateString: "28-04-16",
-          type: "credit",
-          icon: Icons.add,
-        ),
-        AccountItemsContainer(
-          item: "Creative Studios",
-          charge: r'+ $ 5,428.00',
-          dateString: "26-04-16",
-          type: "credit",
-          icon: Icons.add,
-        ),
-        AccountItemsContainer(
-          item: "Amazon EU",
-          charge: r"+ $ 746.00",
-          dateString: "25-04-16",
-          type: "Payment",
-          icon: Icons.add,
-        ),
-        // Add more AccountItemsContainer widgets here
-      ],
+  Widget displayAccountTransactions() {
+    return BlocBuilder<TransactionCubit, TransactionState>(
+      builder: (context, state) {
+        if (state is TransactionLoaded) {
+          final transactions = state.transactions;
+
+          return ListView.builder(
+            itemCount: transactions.length,
+            itemBuilder: (context, index) {
+              final transaction = transactions[index];
+              return AccountItemsContainer(
+                item: "Check Transaction",
+                // Customize as needed
+                charge: "- \$ ${transaction.amount}",
+                // Assuming amount is a double
+                dateString: DateFormat("dd-MM-yyyy")
+                    .format(transaction.transactionDate),
+                type: "Check",
+                // Customize as needed
+                icon: Icons.add,
+              );
+            },
+          );
+        } else if (state is TransactionLoading) {
+          return Center(child: CircularProgressIndicator());
+        } else if (state is TransactionError) {
+          return Center(child: Text("Error loading transactions."));
+        } else {
+          // Handle other transaction states or show a loading/error state
+          return Center(child: CircularProgressIndicator());
+        }
+      },
     );
   }
 }
