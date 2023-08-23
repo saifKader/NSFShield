@@ -5,9 +5,9 @@ ThemeData lightTheme = ThemeData(
   unselectedWidgetColor: const Color(0xFF9AAC3D),
   colorScheme: const ColorScheme(
     brightness: Brightness.dark,
-    primary: Color(0xff00A152),
+    primary: Color(0xffcf661c),
     onPrimary: Colors.white,
-    secondary: Color(0xFF3C3C3E),
+    secondary: Color(0xff254675),
     onSecondary: Colors.white,
     tertiary: Color(0xFFCFCFCF),
     onTertiary: Colors.grey,

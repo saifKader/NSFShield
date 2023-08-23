@@ -1,10 +1,5 @@
-import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:nsfsheild/utils/constants.dart';
-
-import '../../logic/cubits/user/user_cubit.dart';
-import 'auth_interceptor.dart';
 
 class UserDataProvider {
   final dio = Dio()
@@ -30,24 +25,7 @@ class UserDataProvider {
     }
   }
 
-  Future<Response> extractAccountNumber(File image) async {
-    try {
-      FormData formData = FormData.fromMap({
-        'check_image': await MultipartFile.fromFile(image.path),
-      });
-
-      final response = await dio.patch(
-        '/extract_account_number',
-        data: formData,
-      );
-      return response;
-    } catch (e) {
-      print('Error extracting account number: $e');
-      throw e;
-    }
-  }
-
-  Future<Response> issueCheck(String accountNumber, double amount, String token) async {
+  Future<Response> issueCheck(String accountNumber, double amount) async {
     try {
       FormData formData = FormData.fromMap({
         'account_number': accountNumber,
@@ -56,11 +34,6 @@ class UserDataProvider {
       final response = await dio.post(
         '/issue_check',
         data: formData,
-        options: Options(
-          headers: {
-            'Authorization': 'Bearer $token',
-          },
-        ),
       );
       return response;
     } catch (e) {

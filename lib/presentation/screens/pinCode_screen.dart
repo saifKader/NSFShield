@@ -39,31 +39,12 @@ class _PinCodeScreenState extends State<PinCodeScreen> {
     await userCubit.refreshUserData();
   }
   void _submit() async {
-    final userState = context.read<UserCubit>().state; // Assuming you have a UserCubit for managing user states
-    if (userState is UserAuthenticated) {
-      // If the user is authenticated, send the image and amount to the backend
       await context.read<CheckCubit>().sendImageAndAmountToBackend(
         widget.accountNumber,
         widget.amount,
-        userState.accessToken,
-      );
-    } else {
-      // Display a snackbar indicating the need to re-login
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Please login to proceed'),
-          duration: Duration(seconds: 3),
-          action: SnackBarAction(
-            label: 'Login',
-            onPressed: () {
-              // Navigate to the login screen
-              Navigator.of(context).pushReplacementNamed(AppRoutes.signInScreen);
-            },
-          ),
-        ),
       );
     }
-  }
+
 
 
 
@@ -71,7 +52,7 @@ class _PinCodeScreenState extends State<PinCodeScreen> {
   @override
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
-
+    final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
         shape: const RoundedRectangleBorder(
@@ -79,7 +60,7 @@ class _PinCodeScreenState extends State<PinCodeScreen> {
             bottom: Radius.circular(30),
           ),
         ),
-        backgroundColor: const Color(0xff00A152),
+        backgroundColor: theme.colorScheme.primary,
         centerTitle: true,
         title: Text(
           'Pin Code', // Replace with your title
@@ -142,7 +123,7 @@ class _PinCodeScreenState extends State<PinCodeScreen> {
                   builder: (BuildContext context) {
                     return AlertDialog(
                       title: Text('Check Success'),
-                      content: Text('Check has been processed successfully with ${widget.alertText} blocked from your account balance.'),
+                      content: Text(state.responseData),
                       actions: [
                         TextButton(
                           child: Text('OK'),

@@ -24,8 +24,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
-      backgroundColor: const Color(0xff00A152),
+      backgroundColor: theme.colorScheme.primary,
       body: BlocBuilder<UserCubit, UserState>(
         builder: (context, state) {
           if (state is UserAuthenticated) {

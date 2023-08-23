@@ -21,6 +21,7 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     const IconData messenger_outline_outlined =
         IconData(0xef42, fontFamily: 'MaterialIcons');
     var screenSize = MediaQuery.of(context).size;
@@ -35,7 +36,7 @@ class _MainScreenState extends State<MainScreen> {
             bottom: Radius.circular(30),
           ),
         ),
-        backgroundColor: const Color(0xff00A152),
+        backgroundColor: theme.colorScheme.primary,
         centerTitle: true,
         title: Text(
           _titles[_currentIndex],
@@ -106,7 +107,7 @@ class _MainScreenState extends State<MainScreen> {
         width: 80.0, // double width for showing text
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(28.0), // half of height and width
-          color: Color(0xff003679), // your custom color
+          color: theme.colorScheme.secondary, // your custom color
         ),
         child: InkWell(
           // for click effect
@@ -149,14 +150,14 @@ class _MainScreenState extends State<MainScreen> {
                           ? FontAwesomeIcons.solidCircleUser
                           : FontAwesomeIcons.circleUser),
                   size: iconSize,
-                  color: isActive ? Color(0xff003679) : Colors.grey,
+                  color: isActive ? theme.colorScheme.secondary : Colors.grey,
                 ),
               ),
               const SizedBox(height: 3),
               Text(
                 index == 0 ? 'Home' : 'Profile',
                 style: TextStyle(
-                  color: isActive ? Color(0xff003679) : Colors.grey,
+                  color: isActive ? theme.colorScheme.secondary : Colors.grey,
                   fontSize: screenHeight * 0.013,
                 ),
               ),

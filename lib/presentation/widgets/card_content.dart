@@ -16,7 +16,7 @@ class CardContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
+    final theme = Theme.of(context);
     final totalBalance = balance + blockedBalance;
     final availableBalance = totalBalance - blockedBalance;
     final numberFormat = NumberFormat('#,##0.00', 'en_US');
@@ -27,11 +27,11 @@ class CardContent extends StatelessWidget {
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [Colors.blue[900]!, Colors.blue[700]!],
+          colors: [theme.colorScheme.secondary, Colors.blue[700]!],
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.blue[900]!.withOpacity(0.5),
+            color: theme.colorScheme.secondary,
             blurRadius: 10,
             offset: Offset(0, 5),
           ),

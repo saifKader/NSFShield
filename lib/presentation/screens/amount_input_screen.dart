@@ -40,8 +40,8 @@ class _AmountInputScreenState extends State<AmountInputScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final double screenWidth = MediaQuery.of(context).size.width;
     final theme = Theme.of(context);
+    final double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
         shape: const RoundedRectangleBorder(
@@ -49,7 +49,7 @@ class _AmountInputScreenState extends State<AmountInputScreen> {
             bottom: Radius.circular(30),
           ),
         ),
-        backgroundColor: const Color(0xff00A152),
+        backgroundColor: theme.colorScheme.primary,
         centerTitle: true,
         title: const Text(
           'Enter amount to block', // Replace with your title
@@ -106,7 +106,22 @@ class _AmountInputScreenState extends State<AmountInputScreen> {
           if (userState is UserAuthenticated) {
             return BlocConsumer<CheckCubit, CheckState>(
               listener: (context, checkState) {
-                // Handle state changes if needed
+                if (checkState is CheckIsFailure) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(checkState.error),
+                      backgroundColor: Colors.red,
+                      duration: const Duration(days: 10),
+                      action: SnackBarAction(
+                        label: 'Try Again',
+                        onPressed: () {
+                          context.read<CheckCubit>().resetCheckState();
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ),
+                  );
+                }
               },
               builder: (context, checkState) {
                 if (checkState is CheckLoadInProgress) {
@@ -142,17 +157,6 @@ class _AmountInputScreenState extends State<AmountInputScreen> {
                       ],
                     ),
                   );
-                } else if (checkState is CheckIsFailure) {
-                  return Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text('Check issuance failed: ${checkState.error}'),
-                        SizedBox(height: 20),
-                        // Display scan bar or other relevant UI
-                      ],
-                    ),
-                  );
                 } else {
                   return Center(
                     child: Column(
@@ -177,9 +181,35 @@ class _AmountInputScreenState extends State<AmountInputScreen> {
                           backgroundColor: Color(0xff003679),
                           width: MediaQuery.of(context).size.width * 0.3,
                           function: () {
-                            context.read<CheckCubit>().extractAccountNumber(widget.scannedImage!);
+                            // Show the confirmation dialog
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: Text('Confirmation'),
+                                  content: Text('Are you sure you want to block $_amount?'),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop(); // Close the dialog
+                                      },
+                                      child: Text('Cancel'),
+                                    ),
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop(); // Close the dialog
+                                        // Proceed with the action
+                                        context.read<CheckCubit>().extractAccountNumber(widget.scannedImage!);
+                                      },
+                                      child: Text('Confirm'),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
                           },
                         ),
+
                       ],
                     ),
                   );

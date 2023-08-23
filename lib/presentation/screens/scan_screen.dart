@@ -75,9 +75,10 @@ class _ScanScreenState extends State<ScanScreen> {
   }
 
   Widget _buildOption({required IconData icon, required String text, required Function onTap}) {
+    final theme = Theme.of(context);
     return ListTile(
       contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
-      leading: Icon(icon, size: 30.0, color: Colors.teal),
+      leading: Icon(icon, size: 30.0, color: theme.colorScheme.secondary),
       title: Text(text, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 18.0)),
       onTap: () => onTap(),
       tileColor: Colors.grey[200],

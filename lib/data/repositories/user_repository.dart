@@ -3,11 +3,12 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:nsfsheild/data/repositories/user_repository_interface.dart';
 
 import '../models/check_transaction_model.dart';
+import '../providers/check_data_provider.dart';
 import '../providers/user_data_provider.dart';
 
 class UserRepository implements IUserRepository {
   final UserDataProvider _userDataProvider = UserDataProvider();
-
+  final CheckDataProvider _checkDataProvider = CheckDataProvider();
 
   Future<List<CheckTransaction>> getCheckTransactions(String token) async {
     try {
@@ -15,12 +16,10 @@ class UserRepository implements IUserRepository {
       if (response.statusCode == 200) {
         final List<dynamic>? transactionList = response.data;  // Use nullable type
         if (transactionList != null) {  // Check for null before proceeding
-          print('hi here 2 ${response.data}');
           final List<CheckTransaction> transactions = transactionList
               .map((transactionJson) =>
               CheckTransaction.fromJson(transactionJson))
               .toList();
-          print('hi here 3');
           print(transactionList);
           print(transactions);
           return transactions;
@@ -42,25 +41,31 @@ class UserRepository implements IUserRepository {
   @override
   Future<dynamic> extractAccountNumber(File image) async {
     try {
-      final response = await _userDataProvider.extractAccountNumber(image);
+      final response = await _checkDataProvider.extractAccountNumber(image);
+
       if (response.statusCode == 200) {
         return response.data;
-      } else {
-        return null;
+      } else if (response.statusCode == 210){
+        return response.data['error'] ?? 'Error extracting account number.';
       }
-    } catch (e) {
-      print('Error extracting account numbeazeazeazer: $e');
-      return Future.error(e.toString());
+      else {
+        return response.data['msg'] ?? 'Error extracting account number.';
+      }
+    } catch (error) {
+      // Handle DioException here
+      print('DioException occurred: $error');
+      return 'An error occurred while making the request.';
     }
   }
 
-  Future<dynamic> sendImageAndAmount(String accountNumber, double amount, String token) async {
+
+  Future<dynamic> sendImageAndAmount(String accountNumber, double amount) async {
     try {
-      final response = await _userDataProvider.issueCheck(accountNumber, amount, token);
+      final response = await _userDataProvider.issueCheck(accountNumber, amount);
       if (response.statusCode == 200) {
         return response.data;
       } else {
-        return null;
+        return response.data['msg'] ?? 'Error sending image and amount.';
       }
     } catch (e) {
       return Future.error(e.toString());
