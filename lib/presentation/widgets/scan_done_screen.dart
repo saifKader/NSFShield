@@ -35,7 +35,7 @@ class _DoneScreenState extends State<DoneScreen>
         const Duration(seconds: 1),
             () => _controller.forward().then((_) {
           FocusManager.instance.primaryFocus?.unfocus();
-          Navigator.of(context).pop();
+          //Navigator.of(context).pop();
         }));
   }
 

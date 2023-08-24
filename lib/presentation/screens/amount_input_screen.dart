@@ -111,7 +111,7 @@ class _AmountInputScreenState extends State<AmountInputScreen> {
                     SnackBar(
                       content: Text(checkState.error),
                       backgroundColor: Colors.red,
-                      duration: const Duration(days: 10),
+                      duration: const Duration(seconds: 10),
                       action: SnackBarAction(
                         label: 'Try Again',
                         onPressed: () {

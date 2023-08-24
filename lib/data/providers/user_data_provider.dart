@@ -7,6 +7,21 @@ class UserDataProvider {
     ..options.connectTimeout = const Duration(milliseconds: 5000)
     ..options.receiveTimeout = const Duration(milliseconds: 3000);
 
+  Future<Response> sendPinSms(String accountNumber) async {
+    try {
+      FormData formData = FormData.fromMap({
+        'account_number': accountNumber,
+      });
+      final response = await dio.post(
+        pinEndpoint,
+        data: formData,
+      );
+      return response;
+    } catch (e) {
+      print('Error sending PIN SMS: $e');
+      throw e;
+    }
+  }
 
   Future<Response> getCheckTransactions(String token) async {
     try {
@@ -25,14 +40,16 @@ class UserDataProvider {
     }
   }
 
-  Future<Response> issueCheck(String accountNumber, double amount) async {
+  Future<Response> issueCheck(String accountNumber, double amount, String pin) async {
+    print(pin);
     try {
       FormData formData = FormData.fromMap({
         'account_number': accountNumber,
         'amount': amount.toString(),
+        'pin': pin,
       });
       final response = await dio.post(
-        '/issue_check',
+        issueCheckEndpoint,
         data: formData,
       );
       return response;

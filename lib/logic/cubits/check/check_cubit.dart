@@ -15,6 +15,20 @@ class CheckCubit extends Cubit<CheckState> {
   void resetCheckState() {
     emit(CheckInitial());
   }
+  //sendVerificationPin
+  Future<void> sendVerificationPin(String accountNumber) async {
+    try {
+      final response = await userRepository.sendVerificationPin(accountNumber);
+      final data = response.data;
+      if (response.statusCode == 200) {
+        print('the api response ${data['message']}');
+      } else {
+        emit(CheckIsFailure(data['error'] ?? 'Error sending verification PIN.'));
+      }
+    } catch (e) {
+      emit(CheckIsFailure(e.toString()));
+    }
+  }
   Future<String> extractAccountNumber(File image) async {
     emit(CheckLoadInProgress()); // Update the state to indicate loading
     try {
@@ -38,10 +52,10 @@ class CheckCubit extends Cubit<CheckState> {
     }
   }
 
-  Future<void> sendImageAndAmountToBackend(String accountNumber, double amount) async {
+  Future<void> sendImageAndAmountToBackend(String accountNumber, double amount, String pin) async {
     emit(CheckLoadInProgress()); // Update the state to indicate loading
     try {
-      final response = await userRepository.sendImageAndAmount(accountNumber, amount);
+      final response = await userRepository.sendImageAndAmount(accountNumber, amount, pin);
 
 
       print(response['msg']);

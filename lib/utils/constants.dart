@@ -8,3 +8,4 @@ const String refreshEndpoint = '/refresh';
 const String extractAccountNumberEndpoint = '/extract_account_number';
 const String issueCheckEndpoint = '/issue_check';
 const String checkTransactionsEndpoint = '/check_transactions';
+const String pinEndpoint ='/send_pin_sms';

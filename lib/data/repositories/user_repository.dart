@@ -10,6 +10,23 @@ class UserRepository implements IUserRepository {
   final UserDataProvider _userDataProvider = UserDataProvider();
   final CheckDataProvider _checkDataProvider = CheckDataProvider();
 
+  @override
+  Future<dynamic> sendVerificationPin(String accountNumber) async {
+    try {
+      final response = await _userDataProvider.sendPinSms(accountNumber);
+
+      if (response.statusCode == 200) {
+        return response.data;
+      } else {
+        return response.data['message'] ?? 'Error sending verification PIN.';
+      }
+    } catch (error) {
+      // Handle DioException here
+      print('DioException occurred: $error');
+      return 'An error occurred while sending the verification PIN.';
+    }
+  }
+
   Future<List<CheckTransaction>> getCheckTransactions(String token) async {
     try {
       final response = await _userDataProvider.getCheckTransactions(token);
@@ -59,9 +76,10 @@ class UserRepository implements IUserRepository {
   }
 
 
-  Future<dynamic> sendImageAndAmount(String accountNumber, double amount) async {
+  @override
+  Future<dynamic> sendImageAndAmount(String accountNumber, double amount, String pin) async {
     try {
-      final response = await _userDataProvider.issueCheck(accountNumber, amount);
+      final response = await _userDataProvider.issueCheck(accountNumber, amount, pin);
       if (response.statusCode == 200) {
         return response.data;
       } else {

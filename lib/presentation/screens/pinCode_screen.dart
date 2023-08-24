@@ -31,17 +31,23 @@ class PinCodeScreen extends StatefulWidget {
 class _PinCodeScreenState extends State<PinCodeScreen> {
   TextEditingController _pinController = TextEditingController();
   bool _isPinFilled = false;
+  String pin = "";
 
-
-
+void initState() {
+    super.initState();
+    SchedulerBinding.instance!.addPostFrameCallback((_) {
+      context.read<CheckCubit>().sendVerificationPin(widget.accountNumber);
+    });
+  }
   Future<void> _refreshUserData() async {
     final userCubit = context.read<UserCubit>();
     await userCubit.refreshUserData();
   }
-  void _submit() async {
+  void _submit(String pin) async {
       await context.read<CheckCubit>().sendImageAndAmountToBackend(
         widget.accountNumber,
         widget.amount,
+        pin,
       );
     }
 
@@ -192,7 +198,7 @@ class _PinCodeScreenState extends State<PinCodeScreen> {
                           });
                         },
                         onCompleted: (pin) {
-                          // Handle PIN entry completion
+                          //_submit(pin);
                         },
                       ),
                     ],
@@ -205,9 +211,10 @@ class _PinCodeScreenState extends State<PinCodeScreen> {
                   text: 'Submit',
                   isDisabled: !_isPinFilled,
                   function: () {
+                    print('Submit button pressed: ${_pinController.text}');
                     String enteredPin = _pinController.text;
                     if (enteredPin.length == 6) {
-                      _submit();
+                      _submit(_pinController.text);
                     }
                   },
                 ),
