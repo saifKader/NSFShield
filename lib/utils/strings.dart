@@ -10,7 +10,7 @@ class AppStrings {
   static const kpassword = 'Password';
   static const ktypeYour = 'Type your';
   static const ksignIn = 'Sign in';
-  static const ksignInPrompt = 'NSFSHeild';
+  static const ksignInPrompt = 'NSFSHield';
   static const ksignUpPrompt = 'Join us to start your journey';
   static const ksignUpPrompt2 = 'Discover ESPRIT university';
   static const kforgotPassword = 'Forgot Password?';

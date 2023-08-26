@@ -51,6 +51,7 @@ dependencies:
   animation_list: ^2.2.1
   google_fonts: ^5.1.0
   flip_card: ^0.7.0
+  sizing: ^1.1.2
   document_scanner_flutter:
     git:
         url: https://github.com/saifKader/document_scanner_flutter.git

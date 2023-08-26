@@ -4,7 +4,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:nsfsheild/logic/cubits/check/transaction_cubit.dart';
+import 'package:nsfsheild/presentation/animations/splash_screen.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:sizing/sizing_builder.dart';
 import 'data/providers/service_locator.dart';
 import 'data/repositories/user_repository.dart';
 import 'logic/app_bloc_observer.dart';
@@ -77,7 +79,9 @@ class MyApp extends StatelessWidget {
               if (state is UserAuthenticated) {
                 return const MainScreen();
               } else {
-                return LoginForm();
+                return SizingBuilder( // Wrap with SizingBuilder
+                  builder: () => SplashScreen(),
+                );
               }
             },
           ),

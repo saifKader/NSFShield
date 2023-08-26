@@ -10,7 +10,7 @@ import '../../logic/cubits/check/check_cubit.dart';
 import '../../logic/cubits/check/check_state.dart';
 import '../../logic/cubits/user/user_cubit.dart'; // Import your UserCubit
 import '../../logic/cubits/user/user_state.dart';
-import '../widgets/loading_screen.dart';
+
 import '../widgets/button.dart';
 import '../widgets/scan_done_screen.dart';
 import '../widgets/text_form_field.dart';

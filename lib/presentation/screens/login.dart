@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:nsfsheild/logic/cubits/user/user_cubit.dart';
 import 'package:nsfsheild/logic/cubits/user/user_state.dart';
 import 'package:nsfsheild/presentation/router/routes.dart';
 import 'package:nsfsheild/utils/strings.dart';
 import 'package:nsfsheild/utils/theme.dart';
+import 'package:sizing/sizing.dart';
 
 import '../widgets/button.dart';
 import '../widgets/snackbar.dart';
 import '../widgets/text_form_field.dart';
 import 'main_screen.dart';
 
-class LoginForm extends StatelessWidget {
+class LoginScreen extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -46,7 +48,7 @@ class LoginForm extends StatelessWidget {
           onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
           child: SingleChildScrollView( // Wrap with SingleChildScrollView
             child: Container(
-              padding: const EdgeInsets.symmetric(
+              padding:  EdgeInsets.symmetric(
                   horizontal: AppSizes.kbigSpace, vertical: AppSizes.khugeSpace),
               color: theme.colorScheme.background,
               child: Form(
@@ -55,16 +57,23 @@ class LoginForm extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    const SizedBox(height: AppSizes.khugeSpace),
+                     SizedBox(height: AppSizes.khugeSpace),
                     Image.asset(
                       'assets/images/logo.png',
                       height: AppSizes.khugeImageSize,
                       width: AppSizes.khugeImageSize,
                     ),
-                    Text(
+                Padding(
+                  padding: EdgeInsets.only(left: 22.ss), // Adjust the left value as needed
+                  child: Text(
                       AppStrings.ksignInPrompt,
-                      style: theme.textTheme.headlineLarge,
+                      style: GoogleFonts.pressStart2p(
+                        color: theme.colorScheme.secondary,
+                        fontSize: AppSizes.ktitleTextHeight,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
+                ),
                     const SizedBox(height: AppSizes.kbigSpace),
                     TextFormFieldWidget(
                       controller: _usernameController,

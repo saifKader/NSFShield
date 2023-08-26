@@ -9,7 +9,7 @@ class AppRouter {
   Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
       case AppRoutes.signInScreen:
-        return MaterialPageRoute(builder: (_) => LoginForm());
+        return MaterialPageRoute(builder: (_) => LoginScreen());
 
       case AppRoutes.mainScreen:
         return MaterialPageRoute(builder: (_) => const MainScreen());

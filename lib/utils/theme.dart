@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sizing/sizing.dart';
 
 ThemeData lightTheme = ThemeData(
   useMaterial3: true,
@@ -85,7 +86,7 @@ ThemeData lightTheme = ThemeData(
 
 );
 class AppSizes {
-  static const khugeSpace = 28.0;
+  static final khugeSpace = 0.029.sh;
   static const kbigSpace = 20.0;
   static const ksmallSpace = 10.0;
 
@@ -95,13 +96,14 @@ class AppSizes {
   static const kbuttonHeight = 56.0;
   static const ksmallImageSize = 70.0;
   static const kbigImageSize = 180.0;
-  static const khugeImageSize = 240.0;
+  static final khugeImageSize = 220.ss;
   static const kiconSize = 24.0;
   static const kiconBackgroundSize = 54.0;
   static const kiconBackgroundRadius = 99.0;
 
   static const kshimmerTextHeight = 8.0;
   static const kshimmerTextWidth = 100.0;
+  static final ktitleTextHeight = 23.s;
 
   static const kmarkerSizeExpanded = 55.0;
   static const kmarkerSizeShrinked = 38.0;
