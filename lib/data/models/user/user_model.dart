@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import 'account_model.dart';
+import '../account/account_model.dart';
 
 part 'user_model.freezed.dart';
 part 'user_model.g.dart';

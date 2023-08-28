@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:nsfsheild/logic/cubits/user/user_state.dart';
-import '../../../data/models/user_model.dart';
+import '../../../data/models/user/user_model.dart';
 import '../../../data/repositories/user_repository.dart';
 
 class UserCubit extends HydratedCubit<UserState> {

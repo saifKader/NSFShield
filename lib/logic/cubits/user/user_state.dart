@@ -1,7 +1,7 @@
 
 import 'package:equatable/equatable.dart';
 
-import '../../../data/models/user_model.dart';
+import '../../../data/models/user/user_model.dart';
 
 abstract class UserState extends Equatable {
   @override

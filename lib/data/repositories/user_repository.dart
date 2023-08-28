@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:nsfsheild/data/repositories/user_repository_interface.dart';
 
-import '../models/check_transaction_model.dart';
+import '../models/transaction/check_transaction_model.dart';
 import '../providers/check_data_provider.dart';
 import '../providers/user_data_provider.dart';
 

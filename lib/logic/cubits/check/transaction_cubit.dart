@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:nsfsheild/data/models/check_transaction_model.dart';
+import 'package:nsfsheild/data/models/transaction/check_transaction_model.dart';
 import 'package:nsfsheild/data/repositories/user_repository.dart'; // Import the user repository
 
 part 'transaction_state.dart';

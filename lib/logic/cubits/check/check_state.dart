@@ -1,5 +1,5 @@
 
-import 'package:nsfsheild/data/models/account_model.dart';
+import 'package:nsfsheild/data/models/account/account_model.dart';
 
 abstract class CheckState{}
 
