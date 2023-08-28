@@ -31,11 +31,13 @@ class UserRepository implements IUserRepository {
     try {
       final response = await _userDataProvider.getCheckTransactions(token);
       if (response.statusCode == 200) {
-        final List<dynamic>? transactionList = response.data;  // Use nullable type
-        if (transactionList != null) {  // Check for null before proceeding
+        final List<dynamic>? transactionList =
+            response.data; // Use nullable type
+        if (transactionList != null) {
+          // Check for null before proceeding
           final List<CheckTransaction> transactions = transactionList
               .map((transactionJson) =>
-              CheckTransaction.fromJson(transactionJson))
+                  CheckTransaction.fromJson(transactionJson))
               .toList();
           print(transactionList);
           print(transactions);
@@ -54,7 +56,6 @@ class UserRepository implements IUserRepository {
     }
   }
 
-
   @override
   Future<dynamic> extractAccountNumber(File image) async {
     try {
@@ -62,10 +63,9 @@ class UserRepository implements IUserRepository {
 
       if (response.statusCode == 200) {
         return response.data;
-      } else if (response.statusCode == 210){
+      } else if (response.statusCode == 210) {
         return response.data['error'] ?? 'Error extracting account number.';
-      }
-      else {
+      } else {
         return response.data['msg'] ?? 'Error extracting account number.';
       }
     } catch (error) {
@@ -75,11 +75,12 @@ class UserRepository implements IUserRepository {
     }
   }
 
-
   @override
-  Future<dynamic> sendImageAndAmount(String accountNumber, double amount, String pin) async {
+  Future<dynamic> sendImageAndAmount(
+      String accountNumber, double amount, String pin) async {
     try {
-      final response = await _userDataProvider.issueCheck(accountNumber, amount, pin);
+      final response =
+          await _userDataProvider.issueCheck(accountNumber, amount, pin);
       if (response.statusCode == 200) {
         return response.data;
       } else {
@@ -105,7 +106,6 @@ class UserRepository implements IUserRepository {
     }
   }
 
-
   @override
   Future<dynamic> refreshToken(String refreshToken) async {
     try {
@@ -114,7 +114,8 @@ class UserRepository implements IUserRepository {
         final newAccessToken = response.data['access_token'];
         final newUser = response.data['user'];
         // Update the access token in the dio instance directly
-        _userDataProvider.dio.options.headers['Authorization'] = 'Bearer $newAccessToken';
+        _userDataProvider.dio.options.headers['Authorization'] =
+            'Bearer $newAccessToken';
 
         // Save the new access token to local storage
         await HydratedBloc.storage.write('auth-token', newAccessToken);
@@ -128,6 +129,23 @@ class UserRepository implements IUserRepository {
     }
   }
 
+  @override
+  Future<dynamic> logout(String token) async {
+    try {
+      final response = await _userDataProvider.logout(token);
+      if (response.statusCode == 200) {
+        // Clear the access token from Dio instance headers
+        _userDataProvider.dio.options.headers.remove('Authorization');
 
+        // Clear the access token from local storage
+        await HydratedBloc.storage.delete('auth-token');
 
+        return response.data;
+      } else {
+        return null;
+      }
+    } catch (e) {
+      return Future.error(e.toString());
+    }
+  }
 }

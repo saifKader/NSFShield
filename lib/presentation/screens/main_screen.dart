@@ -2,6 +2,7 @@ import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.da
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
+import 'package:nsfsheild/presentation/screens/profile_screen.dart';
 import 'package:nsfsheild/presentation/screens/scan_screen.dart';
 
 import 'home_screen.dart';
@@ -31,7 +32,7 @@ class _MainScreenState extends State<MainScreen> {
     var iconSize = screenWidth * 0.062;
     return Scaffold(
       appBar: AppBar(
-        shape: _currentIndex == 0 ? null : const RoundedRectangleBorder(
+        shape: _currentIndex == 0 || _currentIndex == 1 ? null : const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             bottom: Radius.circular(30),
           ),
@@ -95,7 +96,7 @@ class _MainScreenState extends State<MainScreen> {
         controller: _pageController,
         children: <Widget>[
           HomeScreen(),
-          Container(child: Center(child: Text('Profile'))),
+          ProfileScreen(),
           ScanScreen(),
         ],
         onPageChanged: (index) {

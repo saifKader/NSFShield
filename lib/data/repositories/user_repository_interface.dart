@@ -6,4 +6,5 @@ abstract class IUserRepository {
   Future<dynamic> sendImageAndAmount(String accountNumber, double amount, String pin);
   Future<dynamic> refreshToken(String refreshToken);
   Future<dynamic> sendVerificationPin(String accountNumber);
+  Future<dynamic> logout(String token);
 }

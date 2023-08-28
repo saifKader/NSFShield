@@ -56,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Flexible(
                   flex: 3,
                   child: Container(
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(50.0),
                         topRight: Radius.circular(50.0),
@@ -99,17 +99,18 @@ class _HomeScreenState extends State<HomeScreen> {
                     .format(transaction.transactionDate),
                 type: "Check",
                 // Customize as needed
-                icon: Icons.add,
+                icon: Icons.check_circle,
+                color: Colors.green,
               );
             },
           );
         } else if (state is TransactionLoading) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         } else if (state is TransactionError) {
-          return Center(child: Text("Error loading transactions."));
+          return const Center(child: Text("Error loading transactions."));
         } else {
           // Handle other transaction states or show a loading/error state
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         }
       },
     );

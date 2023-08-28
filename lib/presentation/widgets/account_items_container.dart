@@ -7,6 +7,7 @@ class AccountItemsContainer extends StatelessWidget {
   final String dateString;
   final String type;
   final IconData icon;
+  final Color color;
 
   AccountItemsContainer({
     required this.item,
@@ -14,6 +15,7 @@ class AccountItemsContainer extends StatelessWidget {
     required this.dateString,
     required this.type,
     required this.icon,
+    required this.color,
   });
 
   @override
@@ -82,7 +84,7 @@ class AccountItemsContainer extends StatelessWidget {
                 ),
               ),
               SizedBox(width: 10.0),
-              Icon(icon, color: Colors.grey),
+              Icon(icon, color: color),
             ],
           ),
         ),

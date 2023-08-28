@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:nsfsheild/logic/cubits/check/transaction_cubit.dart';
 import 'package:nsfsheild/presentation/animations/splash_screen.dart';
+import 'package:nsfsheild/presentation/screens/scan_screen.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sizing/sizing_builder.dart';
 import 'data/providers/service_locator.dart';
@@ -77,7 +78,9 @@ class MyApp extends StatelessWidget {
               // Use the state to determine the UI, e.g., login or main screen
               // Replace this with your logic based on UserCubit state
               if (state is UserAuthenticated) {
-                return const MainScreen();
+                return SizingBuilder(
+                   builder: () => const MainScreen(),
+                );
               } else {
                 return SizingBuilder( // Wrap with SizingBuilder
                   builder: () => SplashScreen(),

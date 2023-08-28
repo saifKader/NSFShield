@@ -38,7 +38,8 @@ class LoginScreen extends StatelessWidget {
           } else if (state is UserAuthenticated) {
             Navigator.pop(dialogContext!);
             // Navigate to the main screen
-            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const MainScreen()));
+            Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (context) => const MainScreen()));
           } else if (state is UserError) {
             Navigator.pop(dialogContext!);
             showSnackBar(context, state.message);
@@ -46,10 +47,13 @@ class LoginScreen extends StatelessWidget {
         },
         child: GestureDetector(
           onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-          child: SingleChildScrollView( // Wrap with SingleChildScrollView
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            // Wrap with SingleChildScrollView
             child: Container(
-              padding:  EdgeInsets.symmetric(
-                  horizontal: AppSizes.kbigSpace, vertical: AppSizes.khugeSpace),
+              padding: EdgeInsets.symmetric(
+                  horizontal: AppSizes.kbigSpace,
+                  vertical: AppSizes.khugeSpace),
               color: theme.colorScheme.background,
               child: Form(
                 key: _formKey,
@@ -57,15 +61,13 @@ class LoginScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                     SizedBox(height: AppSizes.khugeSpace),
+                    SizedBox(height: AppSizes.khugeSpace),
                     Image.asset(
                       'assets/images/logo.png',
                       height: AppSizes.khugeImageSize,
                       width: AppSizes.khugeImageSize,
                     ),
-                Padding(
-                  padding: EdgeInsets.only(left: 22.ss), // Adjust the left value as needed
-                  child: Text(
+                    Text(
                       AppStrings.ksignInPrompt,
                       style: GoogleFonts.pressStart2p(
                         color: theme.colorScheme.secondary,
@@ -73,7 +75,6 @@ class LoginScreen extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                ),
                     const SizedBox(height: AppSizes.kbigSpace),
                     TextFormFieldWidget(
                       controller: _usernameController,
@@ -95,9 +96,9 @@ class LoginScreen extends StatelessWidget {
                           if (_formKey.currentState!.validate()) {
                             // Handle the login action
                             context.read<UserCubit>().loginUser(
-                              _usernameController.text,
-                              _passwordController.text,
-                            );
+                                  _usernameController.text,
+                                  _passwordController.text,
+                                );
                           }
                         },
                       ),

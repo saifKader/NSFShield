@@ -21,7 +21,7 @@ class _SplashScreenState extends State<SplashScreen>
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: Duration(seconds: 2),
+      duration: Duration(seconds:2),
     );
 
     _logoSize = Tween<double>(begin: 300, end: AppSizes.khugeImageSize).animate(

@@ -1,6 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:nsfsheild/utils/strings.dart';
 import 'package:nsfsheild/utils/theme.dart';
-import 'package:flutter/material.dart';
 
 class TextFormFieldWidget extends StatefulWidget {
   const TextFormFieldWidget({
@@ -36,69 +36,68 @@ class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final width = MediaQuery.of(context).size.width;
 
-    return SizedBox(
-      width: width,
-      child: Stack(
-        alignment: Alignment.centerRight,
-        children: [
-          TextFormField(
-            obscureText: _isObscure,
-            controller: widget.controller,
-            onChanged: widget.onChanged,
-            validator: (val) {
-              if (val!.isEmpty) {
-                return '${AppStrings.ktypeYour} ${widget.labelText.toLowerCase()}!';
-              }
-              return null;
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 8.0),
+      child: TextFormField(
+        obscureText: _isObscure,
+        controller: widget.controller,
+        onChanged: widget.onChanged,
+        validator: (val) {
+          if (val!.isEmpty) {
+            return '${AppStrings.ktypeYour} ${widget.labelText.toLowerCase()}!';
+          }
+          return null;
+        },
+        cursorColor: theme.colorScheme.primary,
+        keyboardType: widget.inputType,
+        style: TextStyle(
+          color: Colors.black,
+        ),
+        decoration: InputDecoration(
+          labelText: widget.labelText,
+          suffixIcon: widget.inputType == TextInputType.visiblePassword
+              ? IconButton(
+            onPressed: () {
+              setState(() {
+                _isObscure = !_isObscure;
+              });
             },
-            cursorColor: theme.colorScheme.primary,
-            keyboardType: widget.inputType,
-            style: const TextStyle(
-              color: Colors.black,
+            icon: Icon(
+              _isObscure
+                  ? Icons.visibility
+                  : Icons.visibility_off,
+              color: theme.colorScheme.tertiary,
             ),
-            decoration: InputDecoration(
-              contentPadding: const EdgeInsets.all(AppSizes.kbigSpace),
-              floatingLabelBehavior: FloatingLabelBehavior.never,
-              labelText: widget.labelText,
-              suffixIcon: widget.inputType == TextInputType.visiblePassword
-                  ? IconButton(
-                onPressed: () {
-                  setState(() {
-                    _isObscure = !_isObscure;
-                  });
-                },
-                icon: Icon(
-                  _isObscure
-                      ? Icons.visibility
-                      : Icons.visibility_off,
-                  color: theme.colorScheme.tertiary,
-                ),
-              )
-                  : null,
-            ),
+          )
+              : null,
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: theme.colorScheme.primary),
+            borderRadius: BorderRadius.circular(12.0),
           ),
-          if (widget.isLoading)
-            Container(
-              margin: const EdgeInsets.only(right: AppSizes.kbigSpace),
-              width: 20,
-              height: 20,
-              child: CircularProgressIndicator(
-                strokeWidth: 2,
-                valueColor: AlwaysStoppedAnimation<Color>(
-                    theme.colorScheme.primary),
-              ),
-            ),
-          if (!widget.isLoading && widget.icon != null)
-            IconButton(
-              icon: Icon(
-                widget.icon,
-                color: theme.colorScheme.tertiary,
-              ),
-              onPressed: () {},
-            )
-        ],
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: theme.colorScheme.secondary),
+            borderRadius: BorderRadius.circular(12.0),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: theme.colorScheme.error),
+            borderRadius: BorderRadius.circular(12.0),
+          ),
+          focusedErrorBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: theme.colorScheme.error),
+            borderRadius: BorderRadius.circular(12.0),
+          ),
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 16.0,
+            vertical: 14.0,
+          ),
+          prefixIcon: widget.icon != null
+              ? Icon(
+            widget.icon,
+            color: theme.colorScheme.tertiary,
+          )
+              : null,
+        ),
       ),
     );
   }

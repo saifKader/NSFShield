@@ -3,13 +3,6 @@ import 'package:document_scanner_flutter/configs/configs.dart';
 import 'package:document_scanner_flutter/document_scanner_flutter.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:permission_handler/permission_handler.dart';
-
-import '../../logic/cubits/check/check_cubit.dart';
-import '../../logic/cubits/check/check_state.dart';
-import '../../logic/cubits/user/user_cubit.dart';
-import '../../logic/cubits/user/user_state.dart';
 import 'amount_input_screen.dart';
 
 class ScanScreen extends StatefulWidget {
@@ -74,12 +67,14 @@ class _ScanScreenState extends State<ScanScreen> {
     );
   }
 
-  Widget _buildOption({required IconData icon, required String text, required Function onTap}) {
+  Widget _buildOption(
+      {required IconData icon, required String text, required Function onTap}) {
     final theme = Theme.of(context);
     return ListTile(
       contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
       leading: Icon(icon, size: 30.0, color: theme.colorScheme.secondary),
-      title: Text(text, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 18.0)),
+      title: Text(text,
+          style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 18.0)),
       onTap: () => onTap(),
       tileColor: Colors.grey[200],
       shape: RoundedRectangleBorder(
@@ -89,56 +84,46 @@ class _ScanScreenState extends State<ScanScreen> {
   }
 
   Future<void> _launchScanner(ScannerFileSource source) async {
-    try {
-      final userState = context.read<UserCubit>().state; // Assuming you have a UserCubit for managing user states
-      if (userState is UserAuthenticated) {
-
-        final scannedImage = await DocumentScannerFlutter.launch(context, source: source);
-        if (scannedImage != null) {
-          setState(() {
-            _image = scannedImage;
-            //navigate to amount input screen
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => AmountInputScreen(scannedImage: _image),
-              ),
-            );
-
-          });
-        }
-      }
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Scanning error: $e')),
-      );
+    final scannedImage =
+        await DocumentScannerFlutter.launch(context, source: source);
+    if (scannedImage != null) {
+      setState(() {
+        _image = scannedImage;
+        //navigate to amount input screen
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => AmountInputScreen(scannedImage: _image),
+          ),
+        );
+      });
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
-      return Scaffold(
-        body: InkWell(
-          onTap: () => _selectImageSource(context),
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(FluentIcons.camera_add_24_regular, size: 120, color: Colors.grey[400]),
-                const SizedBox(height: 20), // Some spacing
-                Text(
-                  "Tap anywhere to start scan",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.grey[500],
-                  ),
+    return Scaffold(
+      body: InkWell(
+        onTap: () => _selectImageSource(context),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(FluentIcons.camera_add_24_regular,
+                  size: 120, color: Colors.grey[400]),
+              const SizedBox(height: 20), // Some spacing
+              Text(
+                "Tap anywhere to start scan",
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.grey[500],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
-      );
+      ),
+    );
   }
 }

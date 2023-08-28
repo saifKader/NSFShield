@@ -58,7 +58,24 @@ class UserCubit extends HydratedCubit<UserState> {
     }
   }
 
+  Future<void> logoutUser(String token) async {
+    try {
+      final currentState = state;
 
+      if (currentState is UserAuthenticated) {
+        // Call the logout API to invalidate the user's tokens
+        await userRepository.logout(token);
+
+        // Transition to the unauthenticated state
+        emit(UserUnauthenticated());
+
+        print('Logout successful');
+      }
+    } catch (e) {
+      print('Error during logout: $e');
+      // Handle error, emit an error state or take other appropriate actions
+    }
+  }
 
 
   @override

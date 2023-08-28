@@ -89,4 +89,22 @@ class UserDataProvider {
       ),
     );
   }
+
+  Future<Response> logout(String token) async {
+    try {
+      final response = await dio.post(
+        logoutEndpoint,
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $token',
+          },
+        ),
+      );
+      return response;
+    } catch (e) {
+      print('Error logging out: $e');
+      throw e;
+    }
+  }
+
 }
