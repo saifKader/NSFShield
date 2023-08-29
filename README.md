@@ -1,4 +1,4 @@
-# NSFShield: Ensuring Secure Check Transactions
+<h1 align="center"> NSFShield </h1> <br>
 
 <p align="center">
   <img src="https://github.com/saifKader/NSFShield/blob/main/assets/images/logo.png" alt="NSFShield Banner" width="300">
