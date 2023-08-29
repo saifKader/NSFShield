@@ -27,10 +27,9 @@ NSFShield's architecture is thoughtfully designed to support its mission of effi
 ## Technologies and Tools Used
 
 - [Flutter](https://docs.flutter.dev)
-- [Dio](https://pub.dev/packages/dio)
-- [Flask](https://flask.palletsprojects.com/en/2.1.x/)
 - [Document Scanner](https://pub.dev/packages/document_scanner_flutter)
 - [CMC-7 OCR Model](https://github.com/saifKader/CMC-7-trained-model)
+- [Flask](https://flask.palletsprojects.com/en/2.1.x/)
 - [PostgreSQL](https://www.postgresqltutorial.com)
 
 ## Features
