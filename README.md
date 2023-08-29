@@ -32,7 +32,7 @@ NSFShield's architecture is thoughtfully designed to support its mission of effi
 - [Document Scanner](https://pub.dev/packages/document_scanner_flutter)
 - [CMC-7 OCR Model](https://github.com/saifKader/CMC-7-trained-model)
 - [PostgreSQL](https://www.postgresqltutorial.com)
-  
+
 ## Features
 
 - **Authentication and User Profiles**: Access your account securely.
@@ -55,15 +55,13 @@ NSFShield's architecture is thoughtfully designed to support its mission of effi
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     <img src="https://imgur.com/2v4ClQI.png" width=200>
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
- 
+
 </p>
 <p align="center">
   <img src="https://imgur.com/aNtufFI.png" width=200>
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     <img src="https://imgur.com/6SOthAJ.png" width=200>
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-   
- 
+
+
 </p>
-
-

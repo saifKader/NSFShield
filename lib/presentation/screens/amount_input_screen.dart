@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:nsfsheild/presentation/screens/pinCode_screen.dart';
 
 import '../../logic/cubits/check/check_cubit.dart';
@@ -42,187 +43,207 @@ class _AmountInputScreenState extends State<AmountInputScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final double screenWidth = MediaQuery.of(context).size.width;
-    return Scaffold(
-      appBar: AppBar(
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            bottom: Radius.circular(30),
-          ),
-        ),
-        backgroundColor: theme.colorScheme.primary,
-        centerTitle: true,
-        title: const Text(
-          'Enter amount to block', // Replace with your title
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-          ),
-        ),
-        leadingWidth: screenWidth * 0.35,
-        leading: InkWell(
-          onTap: () {
-            // Handle logo click if needed
-          },
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(
-                  width: 35,
-                  height: 35,
-                  child: Image.asset('assets/images/logo.png', fit: BoxFit.cover),
-                ),
-                const SizedBox(width: 5),
-                const Text(
-                  'NSFShield',
-                  style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold),
-                ),
-              ],
+
+    return GestureDetector(
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: Scaffold(
+        appBar: AppBar(
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(30),
             ),
           ),
-        ),
-        actions: [
-          InkWell(
-            onTap: () {},
-            child: const IconButton(
-              icon: Icon(
-                Icons.notifications,
-                size: 24,
-                color: Colors.white,
+          backgroundColor: theme.colorScheme.primary,
+          centerTitle: true,
+          title: const Text(
+            'Amount', // Replace with your title
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          ),
+          leadingWidth: screenWidth * 0.35,
+          leading: InkWell(
+            onTap: () {
+              // Handle logo click if needed
+            },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: 35,
+                    height: 35,
+                    child: Image.asset('assets/images/logo.png', fit: BoxFit.cover),
+                  ),
+                  const SizedBox(width: 5),
+                  const Text(
+                    'NSFShield',
+                    style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ],
               ),
-              onPressed: null,
             ),
           ),
-        ],
-      ),
-      body: BlocBuilder<UserCubit, UserState>(
-        builder: (context, userState) {
-          if (userState is UserAuthenticated) {
-            return BlocConsumer<CheckCubit, CheckState>(
-              listener: (context, checkState) {
-                if (checkState is CheckIsFailure) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(checkState.error),
-                      backgroundColor: Colors.red,
-                      duration: const Duration(seconds: 10),
-                      action: SnackBarAction(
-                        label: 'Try Again',
-                        onPressed: () {
-                          context.read<CheckCubit>().resetCheckState();
-                          Navigator.pop(context);
-                        },
-                      ),
-                    ),
-                  );
-                }
-              },
-              builder: (context, checkState) {
-                if (checkState is CheckLoadInProgress) {
-                  return Center(
-                    child: DoneScreen(
-                      customPaintSize: 200.0,
-                    ),
-                  );
-                } else if (checkState is CheckSuccess) {
-                  _alertText = "\$$_amount blocked";
-                  accountNumber = checkState.responseData;
-                  print('hahouuuu $accountNumber');
-                  SchedulerBinding.instance!.addPostFrameCallback((_) {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => PinCodeScreen(
-                          accountNumber: accountNumber,
-                          amount: _amount,
-                          alertText: _alertText,
+          actions: [
+            InkWell(
+              onTap: () {},
+              child: const IconButton(
+                icon: Icon(
+                  Icons.notifications,
+                  size: 24,
+                  color: Colors.white,
+                ),
+                onPressed: null,
+              ),
+            ),
+          ],
+        ),
+        body: BlocBuilder<UserCubit, UserState>(
+          builder: (context, userState) {
+            if (userState is UserAuthenticated) {
+              return BlocConsumer<CheckCubit, CheckState>(
+                listener: (context, checkState) {
+                  if (checkState is CheckIsFailure) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(checkState.error),
+                        backgroundColor: Colors.red,
+                        duration: const Duration(seconds: 10),
+                        action: SnackBarAction(
+                          label: 'Try Again',
+                          onPressed: () {
+                            context.read<CheckCubit>().resetCheckState();
+                            Navigator.pop(context);
+                          },
                         ),
                       ),
                     );
-                  });
-                  context.read<CheckCubit>().resetCheckState();
-                  return const Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text('Check issuance successful'),
-                        SizedBox(height: 20),
-                        // Display scan bar or other relevant UI
-                      ],
-                    ),
-                  );
-                } else {
-                  return Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.file(widget.scannedImage!),
-                        SizedBox(height: 20),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 40),
-                          child: TextFormFieldWidget(
-                            controller: TextEditingController(),
-                            labelText: 'Enter Amount',
-                            inputType: TextInputType.number,
-                            onChanged: (value) {
-                              _amount = double.tryParse(value) ?? 0.0;
-                            },
+                  }
+                },
+                builder: (context, checkState) {
+                  if (checkState is CheckLoadInProgress) {
+                    return Center(
+                      child: DoneScreen(
+                        customPaintSize: 200.0,
+                      ),
+                    );
+                  } else if (checkState is CheckSuccess) {
+                    _alertText = "\$$_amount blocked";
+                    accountNumber = checkState.responseData;
+                    print('hahouuuu $accountNumber');
+                    SchedulerBinding.instance!.addPostFrameCallback((_) {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => PinCodeScreen(
+                            accountNumber: accountNumber,
+                            amount: _amount,
+                            alertText: _alertText,
                           ),
                         ),
-                        SizedBox(height: 20),
-                        ButtonWidget(
-                          text: 'Next',
-                          backgroundColor: Color(0xff003679),
-                          width: MediaQuery.of(context).size.width * 0.3,
-                          function: () {
-                            // Show the confirmation dialog
-                            showDialog(
-                              context: context,
-                              builder: (context) {
-                                return AlertDialog(
-                                  title: Text('Confirmation'),
-                                  content: Text('Are you sure you want to block $_amount?'),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pop(); // Close the dialog
-                                      },
-                                      child: Text('Cancel'),
-                                    ),
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pop(); // Close the dialog
-                                        // Proceed with the action
-                                        context.read<CheckCubit>().extractAccountNumber(widget.scannedImage!);
-                                      },
-                                      child: Text('Confirm'),
-                                    ),
-                                  ],
+                      );
+                    });
+                    context.read<CheckCubit>().resetCheckState();
+                    return const Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text('Check issuance successful'),
+                          SizedBox(height: 20),
+                          // Display scan bar or other relevant UI
+                        ],
+                      ),
+                    );
+                  } else {
+                    return Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Image.file(widget.scannedImage!),
+                          SizedBox(height: 30),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 40),
+                            child: TextFormFieldWidget(
+                              controller: TextEditingController(),
+                              labelText: 'Enter Amount',
+                              inputType: TextInputType.number,
+                              icon: FontAwesomeIcons.dollarSign,
+                              onChanged: (value) {
+                                _amount = double.tryParse(value) ?? 0.0;
+                              },
+                            ),
+                          ),
+                          SizedBox(height: 30),
+                          Container(
+                            width: screenWidth * 0.5,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(30),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Color(0xFF003679).withOpacity(0.4),
+                                  blurRadius: 10,
+                                  offset: Offset(0, 4),
+                                ),
+                              ],
+                            ),
+                           child: ButtonWidget(
+                              text: 'Next',
+                              backgroundColor: Color(0xff003679),
+                              width: MediaQuery.of(context).size.width * 0.3,
+                              function: () {
+                                // Show the confirmation dialog
+                                showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      title: Text('Confirmation'),
+                                      content: Text('Are you sure you want to block $_amount?'),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop(); // Close the dialog
+                                          },
+                                          child: Text('Cancel'),
+                                        ),
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop(); // Close the dialog
+                                            // Proceed with the action
+                                            context.read<CheckCubit>().extractAccountNumber(widget.scannedImage!);
+                                          },
+                                          child: Text('Confirm'),
+                                        ),
+                                      ],
+                                    );
+                                  },
                                 );
                               },
-                            );
-                          },
-                        ),
-
-                      ],
-                    ),
-                  );
-                }
-              },
-            );
-          } else {
-            // Handle other user states if needed
-            return Center(child: Text('User not authenticated'));
-          }
-        },
+                            ),
+                          ),
+                          SizedBox(height: 50),
+                        ],
+                      ),
+                    );
+                  }
+                },
+              );
+            } else {
+              // Handle other user states if needed
+              return Center(child: Text('User not authenticated'));
+            }
+          },
+        ),
       ),
     );
   }
+
 
 }
