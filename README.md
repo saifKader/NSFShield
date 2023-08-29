@@ -18,7 +18,7 @@ In an era where NSF (Non-Sufficient Funds) checks have become a prevalent challe
 
 The issue of NSF checks has gained significant prominence due to its impact on both individuals and businesses. Writing a check without sufficient funds can result in financial complexities and inconvenience for all parties involved. NSFShield directly addresses this challenge by introducing a groundbreaking process that guarantees the availability of funds for check transactions.
 
-NSFShield's innovative approach revolves around a two-step process. First, users scan the check using the document_scanner_flutter package, ensuring accurate and efficient scanning. Once the check details are verified, users have the option to instantly block and secure the specified amount in their bank accounts. This pioneering method ensures that the required funds are reserved, eliminating the risk of writing checks without adequate backing.
+NSFShield's innovative approach revolves around a two-step process. First, users scan the check using document scanner, ensuring accurate and efficient scanning. Once the check details are verified, users have the option to instantly block and secure the specified amount in their bank accounts. This pioneering method ensures that the required funds are reserved, eliminating the risk of writing checks without adequate backing.
 
 ## App Structure
 
