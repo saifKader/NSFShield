@@ -57,10 +57,10 @@ NSFShield's architecture is thoughtfully designed to support its mission of effi
 
 </p>
 <p align="center">
+  <img src="https://imgur.com/kzRDXeA.png" width=200>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
   <img src="https://imgur.com/aNtufFI.png" width=200>
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <img src="https://imgur.com/6SOthAJ.png" width=200>
+  <img src="https://imgur.com/6SOthAJ.png" width=200>
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
-
 </p>
