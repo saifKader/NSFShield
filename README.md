@@ -16,9 +16,9 @@ In an era where NSF (Non-Sufficient Funds) checks have become a prevalent challe
 
 ## Introduction
 
-The issue of NSF checks has gained significant prominence due to its impact on both individuals and businesses. Writing a check without sufficient funds can result in financial complexities and inconvenience for all parties involved. NSFShield directly addresses this challenge by introducing a groundbreaking process that guarantees the availability of funds for check transactions.
+The challenge of NSF (Non-Sufficient Funds) checks has become a concern for individuals and businesses in the financial landscape. Issuing a check without enough funds can lead to complex financial problems and inconvenience. NSFShield addresses this issue with an innovative solution that transforms the way we handle check transactions.
 
-NSFShield's innovative approach revolves around a two-step process. First, users scan the check using document scanner,ensuring accurate and efficient detection of documents and automatically capturing cropped images of checks. Once the check details are verified, users have the option to instantly block and secure the specified amount in their bank accounts. This pioneering method ensures that the required funds are reserved, eliminating the risk of writing checks without adequate backing.
+NSFShield's solution is based on a two-step process. First, users employ the document scanner, a smart tool that efficiently captures check details, including the CMC 7 characters. These characters contain crucial information such as the account holder's details. Following this, a meticulous check verification takes place. Users can swiftly and securely block a specific amount in their bank accounts, but only if sufficient funds are available. This ensures that the necessary funds are reserved, minimizing the risk of writing checks without proper financial backing.
 ## App Structure
 
 NSFShield's architecture is thoughtfully designed to support its mission of efficient check management. The app follows the MVVM pattern, guided by Clean Architecture principles. This ensures a clear separation of concerns and facilitates smooth codebase management. BLoC state management enhances the app's reactivity and responsiveness.
