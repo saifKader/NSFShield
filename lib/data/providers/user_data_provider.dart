@@ -40,13 +40,14 @@ class UserDataProvider {
     }
   }
 
-  Future<Response> issueCheck(String accountNumber, double amount, String pin) async {
+  Future<Response> issueCheck(String accountNumber, double amount, String pin, String checkNumber) async {
     print(pin);
     try {
       FormData formData = FormData.fromMap({
         'account_number': accountNumber,
         'amount': amount.toString(),
         'pin': pin,
+        'check_number': checkNumber,
       });
       final response = await dio.post(
         issueCheckEndpoint,

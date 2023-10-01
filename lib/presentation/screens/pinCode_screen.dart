@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nsfsheild/presentation/screens/login.dart';
+import 'package:nsfsheild/presentation/screens/scan_screen.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 import '../../logic/cubits/check/check_cubit.dart';
@@ -17,11 +18,13 @@ class PinCodeScreen extends StatefulWidget {
   final String accountNumber;
   final double amount;
   final String alertText;
+  final String checkNumber;
 
   PinCodeScreen({
     required this.accountNumber,
     required this.amount,
     required this.alertText,
+    required this.checkNumber,
   });
 
   @override
@@ -33,27 +36,27 @@ class _PinCodeScreenState extends State<PinCodeScreen> {
   bool _isPinFilled = false;
   String pin = "";
 
-void initState() {
+  void initState() {
     super.initState();
     SchedulerBinding.instance!.addPostFrameCallback((_) {
       context.read<CheckCubit>().sendVerificationPin(widget.accountNumber);
     });
   }
+
   Future<void> _refreshUserData() async {
     final userCubit = context.read<UserCubit>();
     await userCubit.refreshUserData();
   }
+
   void _submit(String pin) async {
-      await context.read<CheckCubit>().sendImageAndAmountToBackend(
-        widget.accountNumber,
-        widget.amount,
-        pin,
-      );
-    }
-
-
-
-
+    print("check number is now: ${widget.checkNumber}");
+    await context.read<CheckCubit>().issue_check(
+          widget.accountNumber,
+          widget.amount,
+          pin,
+          widget.checkNumber,
+        );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,9 +71,9 @@ void initState() {
         ),
         backgroundColor: theme.colorScheme.primary,
         centerTitle: true,
-        title: Text(
+        title: const Text(
           'Pin Code', // Replace with your title
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
             color: Colors.white,
@@ -87,36 +90,18 @@ void initState() {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                const SizedBox(width: 5),
                 SizedBox(
                   width: 35,
                   height: 35,
-                  child: Image.asset('assets/images/logo.png', fit: BoxFit.cover),
+                  child:
+                      Image.asset('assets/images/logo.jpg', fit: BoxFit.cover),
                 ),
                 const SizedBox(width: 5),
-                const Text(
-                  'NSFShield',
-                  style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold),
-                ),
               ],
             ),
           ),
         ),
-        actions: [
-          InkWell(
-            onTap: () {},
-            child: const IconButton(
-              icon: Icon(
-                Icons.notifications,
-                size: 24,
-                color: Colors.white,
-              ),
-              onPressed: null,
-            ),
-          ),
-        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -136,7 +121,34 @@ void initState() {
                           onPressed: () {
                             Navigator.of(context).pushAndRemoveUntil(
                               MaterialPageRoute(
-                                builder: (context) => const MainScreen(),
+                                builder: (context) => ScanScreen(),
+                              ),
+                              (route) => false,
+                            );
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                );
+              });
+              _refreshUserData();
+            }
+            else if (state is CheckIsFailure ){
+Future.delayed(Duration.zero, () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text('Check Failed'),
+                      content: Text(state.error),
+                      actions: [
+                        TextButton(
+                          child: Text('OK'),
+                          onPressed: () {
+                            Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(
+                                builder: (context) => ScanScreen(),
                               ),
                                   (route) => false,
                             );
@@ -147,10 +159,8 @@ void initState() {
                   },
                 );
               });
-            _refreshUserData();
             }
             return Column(
-
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 SizedBox(height: 20),

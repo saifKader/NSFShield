@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:nsfsheild/logic/cubits/check/transaction_cubit.dart';
 import 'package:nsfsheild/presentation/animations/splash_screen.dart';
+import 'package:nsfsheild/presentation/animations/splash_screen2.dart';
 import 'package:nsfsheild/presentation/screens/scan_screen.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sizing/sizing_builder.dart';
@@ -68,6 +69,7 @@ class MyApp extends StatelessWidget {
           showPerformanceOverlay: false,
           theme: lightTheme,
           themeMode: ThemeMode.light,
+
           // Define the initial route or widget here
           initialRoute: AppRoutes.signInScreen,
           // For example, you can use a BlocBuilder here:
@@ -83,7 +85,7 @@ class MyApp extends StatelessWidget {
                 );
               } else {
                 return SizingBuilder( // Wrap with SizingBuilder
-                  builder: () => SplashScreen(),
+                  builder: () => SplashScreen2(),
                 );
               }
             },

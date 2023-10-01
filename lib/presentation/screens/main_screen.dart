@@ -34,7 +34,7 @@ class _MainScreenState extends State<MainScreen> {
       appBar: AppBar(
         shape: _currentIndex == 0 || _currentIndex == 1 ? null : const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
-            bottom: Radius.circular(30),
+            bottom: Radius.circular(10),
           ),
         ),
         backgroundColor: theme.colorScheme.primary,
@@ -59,19 +59,13 @@ class _MainScreenState extends State<MainScreen> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                const SizedBox(width:5),
                 SizedBox(
                   width: 35, // Slightly reduced the width
                   height: 35, // Slightly reduced the height
-                  child: Image.asset('assets/images/logo.png', fit: BoxFit.cover),
+                  child: Image.asset('assets/images/logo.jpg', fit: BoxFit.cover),
                 ),
                 const SizedBox(width: 5), // Reduced the width
-                const Text(
-                  'NSFShield',
-                  style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold),
-                ),
               ],
             ),
           ),

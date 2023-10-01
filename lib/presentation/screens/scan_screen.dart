@@ -47,7 +47,7 @@ class _ScanScreenState extends State<ScanScreen> {
                 icon: Icons.camera_alt,
                 text: 'Camera',
                 onTap: () {
-                  _launchScanner(ScannerFileSource.CAMERA);
+                 // _launchScanner(ScannerFileSource.CAMERA);
                   Navigator.of(context).pop();
                 },
               ),
@@ -56,7 +56,7 @@ class _ScanScreenState extends State<ScanScreen> {
                 icon: Icons.photo_library,
                 text: 'Photo Library',
                 onTap: () {
-                  _launchScanner(ScannerFileSource.GALLERY);
+                  //_launchScanner(ScannerFileSource.GALLERY);
                   Navigator.of(context).pop();
                 },
               ),
@@ -83,7 +83,7 @@ class _ScanScreenState extends State<ScanScreen> {
     );
   }
 
-  Future<void> _launchScanner(ScannerFileSource source) async {
+  /*Future<void> _launchScanner(ScannerFileSource source) async {
     final scannedImage =
         await DocumentScannerFlutter.launch(context, source: source);
     if (scannedImage != null) {
@@ -98,11 +98,54 @@ class _ScanScreenState extends State<ScanScreen> {
         );
       });
     }
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
+      appBar: AppBar(
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(10),
+          ),
+        ),
+        backgroundColor: theme.colorScheme.primary,
+        centerTitle: true,
+        title: const Text(
+          'Scan', // Replace with your title
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
+        leadingWidth: screenWidth * 0.35,
+        leading: InkWell(
+          onTap: () {
+            // Handle logo click if needed
+          },
+          child: Padding(
+            padding:
+            const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const SizedBox(width: 5),
+                SizedBox(
+                  width: 35,
+                  height: 35,
+                  child: Image.asset('assets/images/logo.jpg',
+                      fit: BoxFit.cover),
+                ),
+
+              ],
+            ),
+          ),
+        ),
+      ),
       body: InkWell(
         onTap: () => _selectImageSource(context),
         child: Center(

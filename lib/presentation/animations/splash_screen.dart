@@ -1,5 +1,6 @@
 import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
+import 'package:nsfsheild/presentation/screens/scan_screen.dart';
 import 'package:sizing/sizing.dart';
 import '../../utils/theme.dart';
 import '../screens/login.dart';
@@ -82,7 +83,7 @@ class _SplashScreenState extends State<SplashScreen>
               child: Container(
                 width: _logoSize.value,
                 height: _logoSize.value,
-                child: Image.asset('assets/images/logo.png'),
+                child: Image.asset('assets/images/logo.jpg'),
               ),
             ),
           ),

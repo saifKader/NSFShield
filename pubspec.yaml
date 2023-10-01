@@ -52,9 +52,12 @@ dependencies:
   google_fonts: ^5.1.0
   flip_card: ^0.7.0
   sizing: ^1.1.2
+  animated_text_kit: ^4.2.2
+  shimmer: ^3.0.0
+  lottie: ^2.6.0
   document_scanner_flutter:
     git:
-        url: https://github.com/saifKader/document_scanner_flutter.git
+      url: https://github.com/ishaquehassan/document_scanner_flutter
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2

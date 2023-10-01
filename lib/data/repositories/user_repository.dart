@@ -16,6 +16,7 @@ class UserRepository implements IUserRepository {
       final response = await _userDataProvider.sendPinSms(accountNumber);
 
       if (response.statusCode == 200) {
+        print("jawek behi");
         return response.data;
       } else {
         return response.data['message'] ?? 'Error sending verification PIN.';
@@ -57,30 +58,11 @@ class UserRepository implements IUserRepository {
   }
 
   @override
-  Future<dynamic> extractAccountNumber(File image) async {
-    try {
-      final response = await _checkDataProvider.extractAccountNumber(image);
-
-      if (response.statusCode == 200) {
-        return response.data;
-      } else if (response.statusCode == 210) {
-        return response.data['error'] ?? 'Error extracting account number.';
-      } else {
-        return response.data['msg'] ?? 'Error extracting account number.';
-      }
-    } catch (error) {
-      // Handle DioException here
-      print('DioException occurred: $error');
-      return 'An error occurred while making the request.';
-    }
-  }
-
-  @override
-  Future<dynamic> sendImageAndAmount(
-      String accountNumber, double amount, String pin) async {
+  Future<dynamic> issueCheckRepo(
+      String accountNumber, double amount, String pin,String checkNumber) async {
     try {
       final response =
-          await _userDataProvider.issueCheck(accountNumber, amount, pin);
+          await _userDataProvider.issueCheck(accountNumber, amount, pin, checkNumber);
       if (response.statusCode == 200) {
         return response.data;
       } else {

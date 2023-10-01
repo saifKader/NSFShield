@@ -12,7 +12,26 @@ class CheckSuccess extends CheckState{
 
   CheckSuccess(this.responseData);
 }
+class CheckOCRSuccess extends CheckState{
+  final String RIB;
+  final String checkNumber;
 
+  CheckOCRSuccess({required this.RIB, required this.checkNumber});
+
+  List<Object?> get props => [RIB, checkNumber];
+
+  Map<String, dynamic> toJson() => {
+    'RIB': RIB,
+    'checkNumber': checkNumber,
+  };
+
+  static CheckOCRSuccess fromJson(Map<String, dynamic> json) {
+    return CheckOCRSuccess(
+      RIB: json['RIB'],
+      checkNumber: json['checkNumber'],
+    );
+  }
+}
 class CheckIsFailure extends CheckState{
   final String error;
 

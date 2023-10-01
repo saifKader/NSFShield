@@ -33,10 +33,15 @@ class _DoneScreenState extends State<DoneScreen>
     );
     Future.delayed(
         const Duration(seconds: 1),
-            () => _controller.forward().then((_) {
-          FocusManager.instance.primaryFocus?.unfocus();
-          //Navigator.of(context).pop();
-        }));
+            () {
+          if (mounted) { // Check if the widget is still in the tree
+            _controller.forward().then((_) {
+              FocusManager.instance.primaryFocus?.unfocus();
+              //Navigator.of(context).pop();
+            });
+          }
+        }
+    );
   }
 
   @override

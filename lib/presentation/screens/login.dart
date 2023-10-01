@@ -63,7 +63,7 @@ class LoginScreen extends StatelessWidget {
                   children: [
                     SizedBox(height: AppSizes.khugeSpace),
                     Image.asset(
-                      'assets/images/logo.png',
+                      'assets/images/logo.jpg',
                       height: AppSizes.khugeImageSize,
                       width: AppSizes.khugeImageSize,
                     ),

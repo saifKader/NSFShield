@@ -15,7 +15,7 @@ class CheckDataProvider {
       });
 
       final response = await dio.patch(
-        '/extract_account_number',
+        extractAccountNumberEndpoint,
         data: formData,
       );
       return response;

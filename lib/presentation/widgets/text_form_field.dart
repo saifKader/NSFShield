@@ -17,7 +17,7 @@ class TextFormFieldWidget extends StatefulWidget {
   final String labelText;
   final TextInputType inputType;
   final void Function(String)? onChanged;
-  final IconData? icon;
+  final Widget? icon;
   final bool isLoading;
 
   @override
@@ -58,18 +58,16 @@ class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
           labelText: widget.labelText,
           suffixIcon: widget.inputType == TextInputType.visiblePassword
               ? IconButton(
-            onPressed: () {
-              setState(() {
-                _isObscure = !_isObscure;
-              });
-            },
-            icon: Icon(
-              _isObscure
-                  ? Icons.visibility
-                  : Icons.visibility_off,
-              color: theme.colorScheme.tertiary,
-            ),
-          )
+                  onPressed: () {
+                    setState(() {
+                      _isObscure = !_isObscure;
+                    });
+                  },
+                  icon: Icon(
+                    _isObscure ? Icons.visibility : Icons.visibility_off,
+                    color: theme.colorScheme.tertiary,
+                  ),
+                )
               : null,
           focusedBorder: OutlineInputBorder(
             borderSide: BorderSide(color: theme.colorScheme.primary),
@@ -92,10 +90,10 @@ class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
             vertical: 14.0,
           ),
           prefixIcon: widget.icon != null
-              ? Icon(
-            widget.icon,
-            color: theme.colorScheme.tertiary,
-          )
+              ? Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: widget.icon,
+                )
               : null,
         ),
       ),
