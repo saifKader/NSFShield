@@ -5,6 +5,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nsfsheild/presentation/screens/account_entry_screen.dart';
 import 'package:nsfsheild/presentation/screens/pinCode_screen.dart';
+import 'package:sizing/sizing.dart';
 
 import '../../logic/cubits/check/check_cubit.dart';
 import '../../logic/cubits/check/check_state.dart';
@@ -29,7 +30,7 @@ class _AmountInputScreenState extends State<AmountInputScreen> {
   String _alertText = '';
   int failedAttempts = 0;
   String checkNumber = '';
-
+  TextEditingController amountController = TextEditingController();
   @override
   void initState() {
     super.initState();
@@ -48,8 +49,8 @@ class _AmountInputScreenState extends State<AmountInputScreen> {
           title: "Amount",
           useRoundedShape: true,
           onBackPress: () {
-            // Optional: Add custom back press behavior here if needed.
-            // If not provided, it will use the default behavior of popping the screen.
+            //pop
+            Navigator.pop(context);
           },
         ),
         body: BlocConsumer<CheckCubit, CheckState>(
@@ -128,83 +129,81 @@ class _AmountInputScreenState extends State<AmountInputScreen> {
                 ),
               );
             } else {
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Image.file(widget.scannedImage!),
-                    SizedBox(height: 30),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 40),
-                      child: TextFormFieldWidget(
-                        controller: TextEditingController(),
-                        labelText: 'Enter Amount',
-                        inputType: TextInputType.number,
-                        icon: Text('DT',
-                            style: TextStyle(
-                                color: theme.colorScheme.tertiary,
-                                fontSize: 18)),
-                        onChanged: (value) {
-                          _amount = double.tryParse(value) ?? 0.0;
-                        },
+              return SingleChildScrollView(
+                child: Center(
+                  heightFactor: 1.2,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Image.file(
+                        widget.scannedImage!,
                       ),
-                    ),
-                    const SizedBox(height: 30),
-                    Container(
-                      width: screenWidth * 0.5,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Color(0xFF003679).withOpacity(0.4),
-                            blurRadius: 10,
-                            offset: Offset(0, 4),
-                          ),
-                        ],
+                      const SizedBox(height: 30),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 40),
+                        child: TextFormFieldWidget(
+                          controller: amountController,
+                          labelText: 'Enter Amount',
+                          inputType: TextInputType.number,
+                          icon: Text('DT',
+                              style: TextStyle(
+                                  color: theme.colorScheme.tertiary,
+                                  fontSize: 18)),
+                          onChanged: (value) {
+                            _amount = double.tryParse(value) ?? 0.0;
+                          },
+                        ),
                       ),
-                      child: ButtonWidget(
-                        text: 'Next',
-                        backgroundColor: Color(0xff003679),
-                        width: MediaQuery.of(context).size.width * 0.3,
-                        function: () {
-                          // Show the confirmation dialog
-                          showDialog(
-                            context: context,
-                            builder: (context) {
-                              return AlertDialog(
-                                title: Text('Confirmation'),
-                                content: Text(
-                                    'Are you sure you want to block ${_amount.toStringAsFixed(0)} DT?'),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.of(context)
-                                          .pop(); // Close the dialog
-                                    },
-                                    child: Text('Cancel'),
-                                  ),
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.of(context)
-                                          .pop(); // Close the dialog
-                                      // Proceed with the action
-                                      context
-                                          .read<CheckCubit>()
-                                          .extractAccountNumber(
-                                              widget.scannedImage!);
-                                    },
-                                    child: Text('Confirm'),
-                                  ),
-                                ],
-                              );
-                            },
-                          );
-                        },
+                      const SizedBox(height: 30),
+                      Container(
+                        width: screenWidth * 0.5,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Color(0xFF003679).withOpacity(0.4),
+                              blurRadius: 10,
+                              offset: Offset(0, 4),
+                            ),
+                          ],
+                        ),
+                        child: ButtonWidget(
+                          text: 'Next',
+                          backgroundColor: Color(0xff003679),
+                          width: MediaQuery.of(context).size.width * 0.3,
+                          function: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: Text('Confirmation'),
+                                  content: Text(
+                                      'Are you sure you want to block ${_amount.toStringAsFixed(0)} DT?'),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text('Cancel'),
+                                    ),
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                        context.read<CheckCubit>().extractAccountNumber(widget.scannedImage!);
+                                      },
+                                      child: Text('Confirm'),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          },
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 50),
-                  ],
+                      SizedBox(height: 50),
+                    ],
+                  ),
                 ),
               );
             }

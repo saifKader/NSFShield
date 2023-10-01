@@ -47,7 +47,8 @@ class _ScanScreenState extends State<ScanScreen> {
                 icon: Icons.camera_alt,
                 text: 'Camera',
                 onTap: () {
-                 // _launchScanner(ScannerFileSource.CAMERA);
+                  print("cam");
+                  _launchScanner(ScannerFileSource.CAMERA);
                   Navigator.of(context).pop();
                 },
               ),
@@ -56,7 +57,7 @@ class _ScanScreenState extends State<ScanScreen> {
                 icon: Icons.photo_library,
                 text: 'Photo Library',
                 onTap: () {
-                  //_launchScanner(ScannerFileSource.GALLERY);
+                  _launchScanner(ScannerFileSource.GALLERY);
                   Navigator.of(context).pop();
                 },
               ),
@@ -83,22 +84,29 @@ class _ScanScreenState extends State<ScanScreen> {
     );
   }
 
-  /*Future<void> _launchScanner(ScannerFileSource source) async {
-    final scannedImage =
-        await DocumentScannerFlutter.launch(context, source: source);
-    if (scannedImage != null) {
-      setState(() {
-        _image = scannedImage;
-        //navigate to amount input screen
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => AmountInputScreen(scannedImage: _image),
-          ),
-        );
-      });
+  Future<void> _launchScanner(ScannerFileSource source) async {
+    try {
+      final scannedImage =
+      await DocumentScannerFlutter.launch(context, source: source);
+      if (scannedImage != null) {
+        setState(() {
+          _image = scannedImage;
+          //navigate to amount input screen
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => AmountInputScreen(scannedImage: _image),
+            ),
+          );
+        });
+      }
+    } catch (e) {
+      print("Error launching scanner: $e");
+      // Optionally, you can show an error message to the user
+      // using a dialog or a snackbar
     }
-  }*/
+  }
+
 
   @override
   Widget build(BuildContext context) {
